@@ -8,7 +8,7 @@
     "dev-noserver": "webpack-dev-server --open --config webpack.dev.js",
     "dev": "node server.js",
     "build": "webpack --config webpack.prod.js",
-    "start": "npm run build && node server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
