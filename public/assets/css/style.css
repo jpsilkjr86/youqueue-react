@@ -20,6 +20,10 @@ main {
 	margin: 10px 0 0 30px;
 }
 
+#signin-card {
+	margin: 15px 0;
+}
+
 .customer-row {
 	font-size: 12px;
 	height: 110px;

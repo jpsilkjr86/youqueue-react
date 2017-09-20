@@ -1,8 +1,7 @@
-	// react dependencies
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// imports react
+import React from 'react';
 
-// declares Footer component as ES6 class, which will be this file's export
+// declares Footer pure functional component, which will be this file's export
 const Footer = props => (
 	<footer className="page-footer light-blue darken-4">
     <div className="container">

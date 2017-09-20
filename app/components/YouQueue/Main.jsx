@@ -1,6 +1,8 @@
-// imports React Component class
+// imports react component classes
 import React, { Component } from 'react';
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
+
+import MainContainer from './MainContainer.jsx';
 
 // imports axios for routing / server communication
 import axios from 'axios';
@@ -26,9 +28,9 @@ class Main extends Component {
 
 	render() {
     return (
-      <main>
+      <MainContainer>
         Main
-      </main>
+      </MainContainer>
     );
   } // end of render
 

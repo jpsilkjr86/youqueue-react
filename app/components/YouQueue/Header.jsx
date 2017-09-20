@@ -1,8 +1,8 @@
-// react dependencies
-import React, { Component } from 'react';
+// imports react component classes
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-// declares Header component as ES6 class, which will be this file's export
+// declares Header pure functional component, which will be this file's export
 const Header = props => (
 	// if logged in, render this:
 	props.loggedIn ? (
