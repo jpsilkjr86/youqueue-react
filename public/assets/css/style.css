@@ -9,6 +9,17 @@ main {
   flex: 1 0 auto;
 }
 
+#logo {
+	z-index: 50;
+	position: relative;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.slide-out-brand {
+	margin: 10px 0 0 30px;
+}
+
 .customer-row {
 	font-size: 12px;
 	height: 110px;
