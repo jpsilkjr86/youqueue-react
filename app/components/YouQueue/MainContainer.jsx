@@ -1,8 +1,8 @@
 // imports react
 import React from 'react';
 
-// declares MainComponent pure functional component, which will be this file's export
-const MainComponent = props => (
+// declares MainContainer pure functional component, which will be this file's export
+const MainContainer = props => (
 	<main>
 		<div className="container">
 			{props.children}
@@ -10,5 +10,5 @@ const MainComponent = props => (
 	</main>
 );
 
-// exports MainComponent component for other files to use
-export default MainComponent;
+// exports MainContainer component for other files to use
+export default MainContainer;
