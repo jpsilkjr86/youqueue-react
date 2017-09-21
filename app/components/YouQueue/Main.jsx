@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
 
 import MainContainer from './MainContainer.jsx';
+import QueueDashboard from './QueueDashboard.jsx';
 
 // imports axios for routing / server communication
 import axios from 'axios';
@@ -29,7 +30,7 @@ class Main extends Component {
 	render() {
     return (
       <MainContainer>
-        Main
+        <QueueDashboard/>
       </MainContainer>
     );
   } // end of render

@@ -61,3 +61,13 @@ main {
 	color: #444444;
 	text-shadow: 1px 1px 1px white;
 }
+
+#dashboard-card-title {
+	padding: 10px; 
+	margin-bottom: 0;
+}
+
+#header-card-title {
+	width: 50%; 
+	margin: 8px auto;
+}
