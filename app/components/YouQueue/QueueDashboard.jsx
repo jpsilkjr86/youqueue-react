@@ -1,16 +1,16 @@
 // imports react component classes
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import CustomerCollection from './QueueDashboard/CustomerCollection.jsx'
+import CustomerCollection from './QueueDashboard/CustomerCollection.jsx';
 
 class QueueDashboard extends Component {
 	constructor(props) {
 		super(props);
 
-	// set initial state
-  this.state = { 
-		customers: []
-	};
+		// set initial state
+	  this.state = { 
+			customers: []
+		};
 
 
 
@@ -25,9 +25,7 @@ class QueueDashboard extends Component {
               <h5 id="header-card-title">You-Queue Dashboard</h5>
             </div>
             <div className="card-content">
-            YOU-QUEUE DASHBOARD CONTENT
-            <CustomerCollection customers={this.state.customers}/>
-
+	            <CustomerCollection customers={this.state.customers}/>
             </div> 
 	        </div> 
 		    </div> 
