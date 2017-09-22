@@ -1,14 +1,20 @@
 // imports react component classes
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
+import CustomerCollection from './QueueDashboard/CustomerCollection.jsx'
 
 class QueueDashboard extends Component {
 	constructor(props) {
 		super(props);
 
+	// set initial state
+  this.state = { 
+		customers: []
+	};
 
 
-	}
+
+	} 
 
   render() {
 		return (
@@ -20,6 +26,8 @@ class QueueDashboard extends Component {
             </div>
             <div className="card-content">
             YOU-QUEUE DASHBOARD CONTENT
+            <CustomerCollection customers={this.state.customers}/>
+
             </div> 
 	        </div> 
 		    </div> 
