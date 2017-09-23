@@ -9,6 +9,6 @@ import YouQueue from './YouQueue.jsx';
 // wrap everything in Router to take advantage of react-routing.
 module.exports = (
   <Router>
-    <YouQueue/>
+    <YouQueue/>    
   </Router>
 );

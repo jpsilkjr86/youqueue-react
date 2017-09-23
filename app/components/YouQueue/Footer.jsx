@@ -22,7 +22,7 @@ const Footer = props => (
 		</div>
 		<div className="footer-copyright">
 			<div className="container">
-			© 2017 Copyright John, Michael and Tarmin
+			© 2017 Copyright John, Michael, Tarmin and Tyler
 			</div>
 		</div>
 	</footer>
