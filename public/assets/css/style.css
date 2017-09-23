@@ -1,5 +1,8 @@
 body {
 	background: url("../images/res.jpg");
+}
+
+#app>div{
 	display: flex;
 	min-height: 100vh;
 	flex-direction: column;
@@ -24,7 +27,7 @@ main {
 	margin: 15px 0;
 }
 
-.customer-row {
+.party-row {
 	font-size: 12px;
 	height: 110px;
 }
