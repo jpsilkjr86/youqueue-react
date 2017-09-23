@@ -16,14 +16,14 @@ const Header = props => (
 					</a>
 					<div className="brand-logo center">Welcome!</div>
 					<ul id="nav-mobile" className="right hide-on-small-only">
-						<li><Link to="/addcustomer" className="btn-floating"><i className="material-icons red accent-1">add</i></Link></li>
-						<li><Link to="/dashboard" className="btn-floating"><i className="material-icons red accent-1">dashboard</i></Link></li>
+						<li><Link to="/restaurant/test/parties/add" className="btn-floating"><i className="material-icons red accent-1">add</i></Link></li>
+						<li><Link to="/restaurant/test/dashboard" className="btn-floating"><i className="material-icons red accent-1">dashboard</i></Link></li>
 						<li><a href="#" onClick={props.logOut}>Log Out</a></li>
 					</ul>
 					<ul className="side-nav hide-on-med-and-up" id="slide-out">
 						<li><img src="/assets/images/brand_small.png" className="slide-out-brand"/></li>
-						<li><Link to="/dashboard">Queue Dashboard</Link></li>
-						<li><Link to="/addcustomer">Add Customer</Link></li>
+						<li><Link to="/restaurant/test/dashboard">Queue Dashboard</Link></li>
+						<li><Link to="/restaurant/test/parties/add">Add Customer</Link></li>
 						<li><a href="#" onClick={props.logOut}>Log Out</a></li>
 					</ul>
 				</div>

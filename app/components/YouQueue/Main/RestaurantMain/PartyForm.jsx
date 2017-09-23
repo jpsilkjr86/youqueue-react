@@ -1,8 +1,9 @@
 // imports react component classNamees
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 
-class CustomerForm extends Component {
+class PartyForm extends Component {
 
 	constructor(props) {
 		super(props);
@@ -21,14 +22,14 @@ class CustomerForm extends Component {
 			<div className="row">
 			  <div className="col s12">
 			    <div className="card z-depth-4">
-			      <div className="card-content" style="padding: 30px 40px 0 40px">
+			      <div className="card-content" id="partyform-content">
 			        <form id="new-customer" action="/customer/add" method="post">
 			                
 			          <div className="row">
 			            <h5 className="center-align">Add Customer</h5>
 			              <p className="right"><em>*Required input</em></p>
 			              
-			                <div className="row" style="margin-top: 20px">
+			                <div className="row" id="partyform-row-wrapper">
 			                  <div className="input-field col s12 m6">
 			                    <i className="material-icons prefix">group</i>
 			                      <input id="party_name" type="text" className="validate" required="required" name="party_name"/>
@@ -72,7 +73,7 @@ class CustomerForm extends Component {
                             <label for="occasion">*Occasion</label>
                         </div>
                         <div className="col s12 center">
-                            <a className="btn btn-large waves-effect waves-light red lighten-2 left" href="/">Cancel</a>
+                            <Link to="/" className="btn btn-large waves-effect waves-light red lighten-2 left">Cancel</Link>
                             <button className="btn btn-large waves-effect waves-light right" type="submit">Submit</button>
                         </div>                                
 			            		</div> 
@@ -87,5 +88,5 @@ class CustomerForm extends Component {
 
 }
 
-// exports CustomerForm component for other files to use
-export default CustomerForm;
+// exports PartyForm component for other files to use
+export default PartyForm;

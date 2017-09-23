@@ -27,6 +27,14 @@ main {
 	margin: 15px 0;
 }
 
+#partyform-content {
+	padding: 30px 40px 0 40px;
+}
+
+#partyform-row-wrapper {
+	 margin-top: 20px;
+}
+
 .party-row {
 	font-size: 12px;
 	height: 110px;

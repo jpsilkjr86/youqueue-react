@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Route, Link, Redirect, Switch } from 'react-router-dom';
 
-import CustomerForm from './CustomerForm.jsx';
 import PartyCollection from './QueueDashboard/PartyCollection.jsx';
 
 // imports axios for ajax calls
@@ -47,7 +46,7 @@ class QueueDashboard extends Component {
             		<PartyCollection parties={this.state.parties}/>
             	) : (
             		<div className="center">
-            			<Link to="/addcustomer" className="btn-large center">ADD CUSTOMER</Link>
+            			<Link to="/restaurant/test/parties/add" className="btn-large center">ADD CUSTOMER</Link>
 	  						</div>
             	)  }
             </div> 
