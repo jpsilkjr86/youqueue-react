@@ -12,20 +12,23 @@ const port = process.env.PORT || 3000;
 // ================ Mongoose Configuration ================
 // configures mongoose promises to ES6 Promises
 mongoose.Promise = Promise;
-// sets database configuration
+// first checks to see if production environment variable exists
 if (process.env.PROD_MONGODB) {
+  // if so, connects to mlab uri that is saved in env variable
   console.log('CONNECTING TO MONGODB IN PRODUCTION MODE...');
   mongoose.connect(process.env.PROD_MONGODB, { useMongoClient: true });
-}
+} // else checks to see if config.json exists
 else if (fs.existsSync('./config/config.json')){
+  // if so, connects to mongodb according to uri that is saved in config.json
   console.log('CONNECTING TO MONGODB IN DEVELOPMENT MODE...');
-  var URI = require('./config/config.json')['development']['uri'];
+  const URI = require('./config/config.json')['development']['uri'];
   mongoose.connect(URI, { useMongoClient: true });
 } else {
+  // if none of the above work then server throws an error
   throw new Error('ERROR: NO DATABASE URI SPECIFIED.');
 }
 
-// saves connection as variable
+// saves resulting connection as constable
 const db = mongoose.connection;
 
 // ================ Express Configuration ================
@@ -62,7 +65,7 @@ if (process.env.NODE_ENV !== 'production') {
   // https://ditrospecta.com/javascript/react/es6/webpack/heroku/2015/08/08/deploying-react-webpack-heroku.html
 
   // configures webpack middlewares in development mode
-  app.use(webpackHotMiddleware(compiler))
+  app.use(webpackHotMiddleware(compiler));
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath
@@ -83,6 +86,6 @@ db.once('open', function() {
 	app.listen(port, () => {
 		console.log('App listening on port ' + port);
 		// sets up routes
-		// require('./controllers/api-routes.js')(app);
+		require('./controllers/api-routes.js')(app);
 	});
 });
