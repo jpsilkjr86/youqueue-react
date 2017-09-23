@@ -83,6 +83,6 @@ db.once('open', function() {
 	app.listen(port, () => {
 		console.log('App listening on port ' + port);
 		// sets up routes
-		// require('./controllers/api-routes.js')(app);
+		require('./controllers/api-routes.js')(app);
 	});
 });

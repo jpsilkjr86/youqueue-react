@@ -13,7 +13,10 @@ const PartySchema = new Schema({
   occasion: { type: Array, required: false },
   is_active: { type: Boolean, default: true },
   arrived_table: { type: Boolean, default: false },
-  alerted_sms: { type: Boolean, default: false }
+  alerted_sms: { type: Boolean, default: false },
+  entered_queue_at: { type: Date, default: Date.now },
+  // for testing only - delete later
+  restaurant_id: {  type: String, required: true },
   // // references Restaurant model
   // restaurant_id: { type: Schema.Types.ObjectId, ref: "Restaurant" },
   // // refers to a returning Customer
