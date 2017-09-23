@@ -43,7 +43,7 @@ class QueueDashboard extends Component {
               <h5 id="header-card-title">You-Queue Dashboard</h5>
             </div>
             <div className="card-content">
-            	{this.state.customers.length > 0 ? (
+            	{this.state.parties.length > 0 ? (
             		<PartyCollection parties={this.state.parties}/>
             	) : (
             		<div className="center">
