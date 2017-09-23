@@ -9,7 +9,7 @@ class QueueDashboard extends Component {
 
 		// set initial state
 	  this.state = { 
-			customers: []
+			customers: [1, 2, 3]
 		};
 
 
