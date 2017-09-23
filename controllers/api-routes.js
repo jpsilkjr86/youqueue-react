@@ -1,8 +1,7 @@
-// imports yqh helper object (yqh= youqueueHelpers)
+// imports youqueue helpers object (yqh = youqueue helpers)
 const yqh = require('../helpers/youqueue-helpers.js');
 // creates database helper object
 const dbHelper = yqh.createDatabaseHelper();
-console.log(dbHelper);
 
 // exports as function which takes in app as parameter
 module.exports = app => {
@@ -22,6 +21,7 @@ module.exports = app => {
 		});
 	});
 
+	// route for seeding parties for testing & development
 	app.get('/test/seedparties', (req, res) => {
 		dbHelper.seedParties('test').then(data => {
 			res.json(data);

@@ -63,5 +63,5 @@ const yqh = {
 	} // end of yqh.createDatabaseHelper()
 }; // end of yqh
 
-// exports youqueueHelpers object
+// exports youqueue helpers object
 module.exports = yqh;
