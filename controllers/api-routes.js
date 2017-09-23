@@ -1,5 +1,8 @@
-// imports yqh helper object
+// imports yqh helper object (yqh= youqueueHelpers)
 const yqh = require('../helpers/youqueue-helpers.js');
+// creates database helper object
+const dbHelper = yqh.createDatabaseHelper();
+console.log(dbHelper);
 
 // exports as function which takes in app as parameter
 module.exports = app => {
@@ -10,7 +13,7 @@ module.exports = app => {
 			// console.log('ACCESS DENIED - RESTAURANT ID DOES NOT MATCH USER ID')
 			// return res.send('Permission denied.');
 		// }
-		yqh.db.getAllParties(req.params.id).then(results => {
+		dbHelper.getAllParties(req.params.id).then(results => {
 			console.log(results.length + ' PARTIES FOUND. SENDING BACK TO USER...');
 			res.json(results);
 		}).catch(err => {
@@ -20,7 +23,7 @@ module.exports = app => {
 	});
 
 	app.get('/test/seedparties', (req, res) => {
-		yqh.db.seedParties('test').then(data => {
+		dbHelper.seedParties('test').then(data => {
 			res.json(data);
 		}).catch(err => {
 			console.log(err);

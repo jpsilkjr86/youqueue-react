@@ -6,10 +6,9 @@ const Party = require('../models/Party.js');
 
 // instantiates object to be exported
 const yqh = {
-	// database sub-object
-	db: {
+	dbHelperPrototype: {
 		// gets all active parties that match a restaurant ID
-		getAllParties: restaurant_id => {
+		getAllParties(restaurant_id) {
 			// returns thenable promise that resolves with retrieved parties
 			return Party.find({restaurant_id: restaurant_id, is_active: true}).exec();
 
@@ -22,8 +21,8 @@ const yqh = {
 			// 		reject(err);
 			// 	})
 			// end of returned promise
-		}, // end of yqh.db.getAllParties
-		seedParties: restaurant_id => {
+		}, // end of getAllParties()
+		seedParties (restaurant_id) {
 			testData = [{
 				party_name: 'john doe party',
 			  party_size: 3,
@@ -56,8 +55,13 @@ const yqh = {
 				promises.push(seed.save());
 			}
 			return Promise.all(promises);
-		}
-	} // end of yqh.db
-};
+		} // end of seedParties()
+	}, // end of dbHelperPrototype
+	// factory function for creating dbHelper object
+	createDatabaseHelper() {
+		return Object.create(yqh.dbHelperPrototype);
+	} // end of yqh.createDatabaseHelper()
+}; // end of yqh
 
+// exports youqueueHelpers object
 module.exports = yqh;
