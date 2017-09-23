@@ -3,18 +3,35 @@ import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import CustomerCollection from './QueueDashboard/CustomerCollection.jsx';
 
+// imports axios for ajax calls
+import axios from 'axios';
+
 class QueueDashboard extends Component {
 	constructor(props) {
 		super(props);
 
 		// set initial state
 	  this.state = { 
-			customers: [1, 2, 3]
+			customers: [],
+			restaurant_id: 'test'
 		};
 
 
 
-	} 
+	}
+
+	componentDidMount() {
+		// saves id as more manageable constable
+		const id = this.state.restaurant_id;
+		// performs axios request to get parties by restaurant id
+		axios.get(`/restaurant/${id}/parties/all`).then( ({data}) => {
+			// updates customers array with response data
+			console.log(data);
+			this.setState({customers: data});
+		}).catch(err => {
+			console.log(err);
+		});
+	}
 
   render() {
 		return (
