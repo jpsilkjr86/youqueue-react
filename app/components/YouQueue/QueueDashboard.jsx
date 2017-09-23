@@ -1,33 +1,32 @@
 // imports react component classes
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import CustomerCollection from './QueueDashboard/CustomerCollection.jsx';
+import PartyCollection from './QueueDashboard/PartyCollection.jsx';
 
 // imports axios for ajax calls
 import axios from 'axios';
 
 class QueueDashboard extends Component {
+	// constructor is called once when setting initial state
 	constructor(props) {
 		super(props);
 
 		// set initial state
 	  this.state = { 
-			customers: [],
+			parties: [],
 			restaurant_id: 'test'
 		};
-
-
-
 	}
 
+	// called once the component mounts for the first time
 	componentDidMount() {
 		// saves id as more manageable constable
 		const id = this.state.restaurant_id;
 		// performs axios request to get parties by restaurant id
 		axios.get(`/restaurant/${id}/parties/all`).then( ({data}) => {
-			// updates customers array with response data
+			// updates parties array with response data
 			console.log(data);
-			this.setState({customers: data});
+			this.setState({parties: data});
 		}).catch(err => {
 			console.log(err);
 		});
@@ -42,22 +41,14 @@ class QueueDashboard extends Component {
               <h5 id="header-card-title">You-Queue Dashboard</h5>
             </div>
             <div className="card-content">
-	            <CustomerCollection customers={this.state.customers}/>
+	            <PartyCollection parties={this.state.parties}/>
             </div> 
 	        </div> 
 		    </div> 
 			</div>
-
-
 		);
 	}
-
-
-
-
-
 }
-
 
 // exports QueueDashboard component for other files to use
 export default QueueDashboard;

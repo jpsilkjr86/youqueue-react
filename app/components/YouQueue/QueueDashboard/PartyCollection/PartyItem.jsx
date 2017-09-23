@@ -1,10 +1,10 @@
 // imports react component classNames
 import React, { Component } from 'react';
 
+// declares PartyItem as pure functional component (stateless)
+const PartyItem = props => (
 
-const CustomerItem = props => (
-
-	<li className="collection-item dismissable customer-row" data-id="">
+	<li className="collection-item dismissable party-row" data-id="">
 		<div className="row">
 		  <div className="col s3 m2">
 		    <a className="btn-floating sms-btn" data-id="" data-alerted_sms=""><i className="material-icons">phonelink_ring</i></a>
@@ -29,5 +29,5 @@ const CustomerItem = props => (
 
 )
 
-// exports CustomerItem component for other files to use
-export default CustomerItem;
+// exports PartyItem component for other files to use
+export default PartyItem;
