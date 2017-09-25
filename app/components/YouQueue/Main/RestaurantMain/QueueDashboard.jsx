@@ -4,6 +4,32 @@ import { Route, Link, Redirect, Switch } from 'react-router-dom';
 
 import PartyCollection from './QueueDashboard/PartyCollection.jsx';
 
+// declares QueueDashboard pure functional component, which will be this file's export
+const QueueDashboard = ({parties}) => (
+	<div className="row">
+    <div className="col s12 l10 offset-l1">
+      <div className="card z-depth-4">
+        <div id="dashboard-card-title" className="card-panel red lighten-2 white-text center-align">
+          <h5 id="header-card-title">You-Queue Dashboard</h5>
+        </div>
+        <div className="card-content">
+        	{parties.length > 0 ? (
+        		<PartyCollection parties={parties}/>
+        	) : (
+        		<div className="center">
+        			<Link to="/restaurant/test/parties/add" className="btn-large center">ADD CUSTOMER</Link>
+						</div>
+        	)  }
+        </div> 
+      </div> 
+    </div> 
+	</div>
+); // end of QueueDashboard
+
+// exports QueueDashboard component for other files to use
+export default QueueDashboard;
+
+/*
 // imports axios for ajax calls
 import axios from 'axios';
 
@@ -59,3 +85,5 @@ class QueueDashboard extends Component {
 
 // exports QueueDashboard component for other files to use
 export default QueueDashboard;
+
+*/

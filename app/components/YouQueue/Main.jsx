@@ -7,20 +7,13 @@ import RestaurantMain from './Main/RestaurantMain.jsx';
 
 
 // declares Main pure functional component, which will be this file's export
-const Main = ({match, userType, userId}) => (
+const Main = ({userType, userId}) => (
   <MainContainer>
-    {/* wrap in Switch so that exactly one of these Routes is hit */}
-    <Switch>
-      {/* this route only exists if userType is restaurant */}
-      { userType === 'restaurant' &&
-      <Route exact to="/restaurant/:id" render={props => 
-        <RestaurantMain {...props} userId={userId}/>
-      }/> }
-      {/* add customer user route in similar conditional here */}
-
-      {/* automatically redirects according to usertype and id */}
-      <Redirect exact to={`/${userType}/${userId}`}/>
-    </Switch>
+    {/* this will only render if userType is restaurant */}
+    { userType === 'restaurant' &&
+      <RestaurantMain userId={userId}/>
+    }
+    {/* add CustomerMain component with similar conditional here */}
   </MainContainer>
   
 ); // end of Main

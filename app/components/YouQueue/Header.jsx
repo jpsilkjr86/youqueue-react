@@ -3,9 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // declares Header pure functional component, which will be this file's export
-const Header = props => (
+const Header = ({loggedIn, logIn, logOut, userId, userType}) => (
 	// if logged in, render this:
-	props.loggedIn ? (
+	loggedIn ? (
 
 		<header>
 			<nav>
@@ -16,15 +16,15 @@ const Header = props => (
 					</a>
 					<div className="brand-logo center">Welcome!</div>
 					<ul id="nav-mobile" className="right hide-on-small-only">
-						<li><Link to="/restaurant/test/parties/add" className="btn-floating"><i className="material-icons red accent-1">add</i></Link></li>
-						<li><Link to="/restaurant/test/dashboard" className="btn-floating"><i className="material-icons red accent-1">dashboard</i></Link></li>
-						<li><a href="#" onClick={props.logOut}>Log Out</a></li>
+						<li><Link to={`/${userType}/${userId}/parties/add`} className="btn-floating"><i className="material-icons red accent-1">add</i></Link></li>
+						<li><Link to={`/${userType}/${userId}/dashboard`} className="btn-floating"><i className="material-icons red accent-1">dashboard</i></Link></li>
+						<li><a href="#" onClick={logOut}>Log Out</a></li>
 					</ul>
 					<ul className="side-nav hide-on-med-and-up" id="slide-out">
 						<li><img src="/assets/images/brand_small.png" className="slide-out-brand"/></li>
-						<li><Link to="/restaurant/test/dashboard">Queue Dashboard</Link></li>
-						<li><Link to="/restaurant/test/parties/add">Add Customer</Link></li>
-						<li><a href="#" onClick={props.logOut}>Log Out</a></li>
+						<li><Link to={`/${userType}/${userId}/dashboard`}>Queue Dashboard</Link></li>
+						<li><Link to={`/${userType}/${userId}/parties/add`}>Add Customer</Link></li>
+						<li><a href="#" onClick={logOut}>Log Out</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -41,11 +41,11 @@ const Header = props => (
 					</a>
 					<div className="brand-logo center">WELCOME</div>
 					<ul id="nav-mobile" className="right hide-on-small-only">
-						<li><a href="#" onClick={props.logIn}>Sign In</a></li>
+						<li><a href="#" onClick={logIn}>Sign In</a></li>
 					</ul>
 					<ul className="side-nav hide-on-med-and-up" id="slide-out">
 						<li><img src="/assets/images/brand_small.png" className="slide-out-brand"/></li>
-						<li><a href="#" onClick={props.logIn}>Sign In</a></li>
+						<li><a href="#" onClick={logIn}>Sign In</a></li>
 					</ul>
 				</div>
 			</nav>

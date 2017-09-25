@@ -46,7 +46,13 @@ class YouQueue extends Component {
 	render() {
 		return (
 	    <div>
-	      <Header logIn={this.handleLogIn} logOut={this.handleLogOut} loggedIn={this.state.loggedIn}/>
+	      <Header 
+	      	logIn={this.handleLogIn}
+	      	logOut={this.handleLogOut}
+	      	loggedIn={this.state.loggedIn}
+	      	userType={this.state.userType}
+	      	userId={this.state.userId}	      	
+	      />
 	      <Switch>
 		      <Route exact path="/login" render={props => 
 		      	<Login logIn={this.handleLogIn} loggedIn={this.state.loggedIn}/>
