@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-// import child components
+// import children components
 import Main from './YouQueue/Main.jsx';
 import Header from './YouQueue/Header.jsx';
 import Login from './YouQueue/Login.jsx';
 import Footer from './YouQueue/Footer.jsx';
+import MainContainer from './YouQueue/MainContainer.jsx';
 
 // declares YouQueue component as ES6 class, which will be this file's export.
 // YouQueue will be the parent component that stores logged-in state,
@@ -53,23 +54,25 @@ class YouQueue extends Component {
 	      	userType={this.state.userType}
 	      	userId={this.state.userId}	      	
 	      />
-	      <Switch>
-		      <Route exact path="/login" render={props => 
-		      	<Login logIn={this.handleLogIn} loggedIn={this.state.loggedIn}/>
-		      }/>
-		    	{/* This route ensures user is logged in before rendering anything in Main*/}
-		      <Route path="/" render={props => (
-				    this.state.loggedIn ? (
-				      <Main {...props}
-				      	loggedIn={this.state.loggedIn}
-				      	userType={this.state.userType}
-				      	userId={this.state.userId}
-				      />
-				    ) : (
-				      <Redirect exact to="/login"/>
-				    )
-				  )}/>
-				</Switch>
+	      <MainContainer>
+		      <Switch>
+			      <Route exact path="/login" render={props => 
+			      	<Login logIn={this.handleLogIn} loggedIn={this.state.loggedIn}/>
+			      }/>
+			    	{/* This route ensures user is logged in before rendering anything in Main*/}
+			      <Route path="/" render={props => (
+					    this.state.loggedIn ? (
+					      <Main {...props}
+					      	loggedIn={this.state.loggedIn}
+					      	userType={this.state.userType}
+					      	userId={this.state.userId}
+					      />
+					    ) : (
+					      <Redirect exact to="/login"/>
+					    )
+					  )}/>
+					</Switch>
+				</MainContainer>
 			  <Footer/>
 	    </div>
 		);

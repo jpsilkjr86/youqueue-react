@@ -1,7 +1,8 @@
 // imports react component classes
 import React, { Component } from 'react';
-import { Route, Link, Redirect, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
+// imports children components
 import PartyCollection from './QueueDashboard/PartyCollection.jsx';
 
 // declares QueueDashboard pure functional component, which will be this file's export

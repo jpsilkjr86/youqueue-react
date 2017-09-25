@@ -1,7 +1,8 @@
 // imports react component classes
-import React, { Component } from 'react';
-import PartyItem from './PartyCollection/PartyItem.jsx';
+import React from 'react';
 
+// imports children components
+import PartyItem from './PartyCollection/PartyItem.jsx';
 
 // declares PartyCollection pure functional component, which will be this file's export
 const PartyCollection = props => (
@@ -12,7 +13,6 @@ const PartyCollection = props => (
 	</ul>
 	
 ); // end of PartyCollection
-
 
 // exports PartyCollection component for other files to use
 export default PartyCollection;

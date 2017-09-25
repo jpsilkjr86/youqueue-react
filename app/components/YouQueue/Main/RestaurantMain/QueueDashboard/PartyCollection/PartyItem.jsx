@@ -1,5 +1,5 @@
 // imports react component classNames
-import React, { Component } from 'react';
+import React from 'react';
 
 // declares PartyItem as pure functional component (stateless)
 const PartyItem = ({party}) => (

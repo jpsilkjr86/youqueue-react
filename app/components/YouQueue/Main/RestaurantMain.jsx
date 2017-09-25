@@ -1,7 +1,8 @@
 // imports react component classes
 import React, { Component } from 'react';
-import { Switch, Route, Redirect, Link } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
+// imports children components
 import QueueDashboard from './RestaurantMain/QueueDashboard.jsx';
 import PartyForm from './RestaurantMain/PartyForm.jsx';
 
