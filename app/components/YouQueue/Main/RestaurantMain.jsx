@@ -6,24 +6,20 @@ import QueueDashboard from './RestaurantMain/QueueDashboard.jsx';
 import PartyForm from './RestaurantMain/PartyForm.jsx';
 
 // declares RestaurantMain pure functional component, which will be this file's export
-const RestaurantMain = props => (
+const RestaurantMain = ({userId}) => {
+	console.log('RestaurantMain rendered');
+	// console.log(match);
+	return (
 	<Switch>
-		<Route exact path="/restaurant/test/dashboard" render={props => 
+		<Route exact path="/restaurant/:id/dashboard" render={props => 
 			<QueueDashboard/>
 		}/>
-		<Route exact path="/restaurant/test/parties/add" render={props => (
+		<Route exact path="/restaurant/:id/parties/add" render={props => (
 			<PartyForm/>
 		)}/>
-		<Redirect to="/restaurant/test/dashboard"/>
+		<Redirect to={`/restaurant/${userId}/dashboard`}/>
 	</Switch>
-); // end of RestaurantMain
+)}; // end of RestaurantMain
 
 // exports RestaurantMain component for other files to use
 export default RestaurantMain;
-
-
-
-
-
-
-		

@@ -1,41 +1,30 @@
 // imports react component classes
-import React, { Component } from 'react';
-import { Route, Switch, Redirect, Link } from 'react-router-dom';
+import React from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import MainContainer from './MainContainer.jsx';
 import RestaurantMain from './Main/RestaurantMain.jsx';
 
-// imports axios for routing / server communication
-import axios from 'axios';
 
-// declares Main component as ES6 class, which will be this file's export
-class Main extends Component {
-	
-	// constructor has no props since this is the parent element
-	constructor(props) {
-    super(props);
-    console.log('main props:');
-    console.log(props);
-    // set initial state
-  //   this.state = {
+// declares Main pure functional component, which will be this file's export
+const Main = ({match, userType, userId}) => (
+  <MainContainer>
+    {/* wrap in Switch so that exactly one of these Routes is hit */}
+    <Switch>
+      {/* this route only exists if userType is restaurant */}
+      { userType === 'restaurant' &&
+      <Route exact to="/restaurant/:id" render={props => 
+        <RestaurantMain {...props} userId={userId}/>
+      }/> }
+      {/* add customer user route in similar conditional here */}
 
-		// };
-    
-	} // end of constructor
+      {/* automatically redirects according to usertype and id */}
+      <Redirect exact to={`/${userType}/${userId}`}/>
+    </Switch>
+  </MainContainer>
+  
+); // end of Main
 
-  componentDidMount() {
-    console.log('Main component mounted');
-  }
-
-	render() {
-    return (
-      <MainContainer>
-        <RestaurantMain/>
-      </MainContainer>
-    );
-  } // end of render
-
-} // end of class
 
 // exports Main component for other files to use
 export default Main;

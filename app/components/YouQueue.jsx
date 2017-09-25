@@ -17,7 +17,9 @@ class YouQueue extends Component {
 
 		// set initial state
     this.state = { 
-			loggedIn: false
+			loggedIn: false,
+			userType: null,
+			userId: null
 		};
 
 		this.handleLogIn = this.handleLogIn.bind(this);
@@ -25,12 +27,20 @@ class YouQueue extends Component {
 	}
 
 	handleLogIn() {
-		this.setState({ loggedIn: true });
+		this.setState({ 
+			loggedIn: true,
+			userType: 'restaurant',
+			userId: 'test'
+		});
 	}
 
 	handleLogOut() {
 		console.log(this.state);
-		this.setState({ loggedIn: false });
+		this.setState({ 
+			loggedIn: false,
+			userType: null,
+			userId: null
+		});
 	}
 
 	render() {
@@ -44,7 +54,11 @@ class YouQueue extends Component {
 		    	{/* This route ensures user is logged in before rendering anything in Main*/}
 		      <Route path="/" render={props => (
 				    this.state.loggedIn ? (
-				      <Main loggedIn={this.state.loggedIn}/>
+				      <Main {...props}
+				      	loggedIn={this.state.loggedIn}
+				      	userType={this.state.userType}
+				      	userId={this.state.userId}
+				      />
 				    ) : (
 				      <Redirect exact to="/login"/>
 				    )
