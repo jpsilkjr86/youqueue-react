@@ -26,7 +26,7 @@ class RestaurantMain extends Component {
 		    offset: 14,
 		    position: 'top right',
 		    theme: 'light',
-		    time: 5000,
+		    time: 4000,
 		    transition: 'scale'
 		  }
 		};
@@ -34,6 +34,8 @@ class RestaurantMain extends Component {
 		this.handleDeactivate = this.handleDeactivate.bind(this);
 		this.handleAlertSMS = this.handleAlertSMS.bind(this);
 		this.handleArriveTable = this.handleArriveTable.bind(this);
+		this.handleUndoArrived = this.handleUndoArrived.bind(this);
+		this.handleUndoDeactivate = this.handleUndoDeactivate.bind(this);
 	}
 
 	// called once the component mounts for the first time
@@ -65,7 +67,12 @@ class RestaurantMain extends Component {
 			// call setState to update parties array
 			this.setState({parties: updatedParties});
 			// alert user that their request was successful
-			this.msg.success('Party successfully deactivated.');
+			this.msg.success(
+				<AlertWithUndo
+					msg="Party deactivated."
+					handler={this.handleUndoDeactivate}
+				/>
+			);
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
@@ -89,7 +96,7 @@ class RestaurantMain extends Component {
 			// call setState to update parties array
 			this.setState({parties: updatedParties});
 			// alert user that their request was successful
-			this.msg.success('SMS successfully delivered.');
+			this.msg.success('SMS delivered!');
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
@@ -113,12 +120,24 @@ class RestaurantMain extends Component {
 			// call setState to update parties array
 			this.setState({parties: updatedParties});
 			// alert user that their request was successful
-			this.msg.success('Party data successfully updated.');
+			this.msg.success(
+				<AlertWithUndo 
+					msg="Party data updated!"
+					handler={this.handleUndoArrived}
+			/>);
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to update party arrived table data.');
 		});
+	}
+
+	handleUndoArrived() {
+		console.log('handle undo arrived');
+	}
+
+	handleUndoDeactivate() {
+		console.log('handle undo deactivate');
 	}
 
   render() {
@@ -143,7 +162,27 @@ class RestaurantMain extends Component {
 			</div>
 		);
 	}
-}
+} // end of RestaurantMain
+
+// RestaurantMain sub-components
+const AlertWithUndo = ({msg, handler}) => (
+	<div>
+		<p>{msg}</p>
+		<a className="btn-flat custom-btn-small" onClick={handler}>Click to Undo</a>	
+	</div>
+);
+
+const UndoDeactivate = ({msg, handler}) => (
+	<div>
+		{msg}
+		<button className="waves-effect waves-light btn" onClick={handler}>
+		Undo
+		</button>
+		<a className="btn-floating waves-effect waves-light red right" onClick={handler}>
+			<i className="material-icons">undo</i>
+		</a>
+	</div>
+);
 
 // exports RestaurantMain component for other files to use
 export default RestaurantMain;
