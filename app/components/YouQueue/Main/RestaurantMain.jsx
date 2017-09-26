@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+// imports supplementary AlertContainer component from react-alert
+import AlertContainer from 'react-alert'
+
 // imports children components
 import QueueDashboard from './RestaurantMain/QueueDashboard.jsx';
 import PartyForm from './RestaurantMain/PartyForm.jsx';
@@ -9,18 +12,23 @@ import PartyForm from './RestaurantMain/PartyForm.jsx';
 // imports axios for ajax calls
 import axios from 'axios';
 
-
 class RestaurantMain extends Component {
 	// constructor is called once when setting initial state
 	constructor(props) {
 		super(props);
-		// console.log('RestaurantMain props');
-		// console.log(props);
 
 		// set initial state
 	  this.state = { 
 			parties: [],
-			restaurant_id: props.userId
+			restaurant_id: props.userId,
+			// for react-alert component
+			alertOptions: {
+		    offset: 14,
+		    position: 'top right',
+		    theme: 'light',
+		    time: 5000,
+		    transition: 'scale'
+		  }
 		};
 
 		this.handleDeactivate = this.handleDeactivate.bind(this);
@@ -57,9 +65,11 @@ class RestaurantMain extends Component {
 			// call setState to update parties array
 			this.setState({parties: updatedParties});
 			// alert user that their request was successful
+			this.msg.success('Party successfully deactivated.');
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
+			this.msg.error('Error: Unable to deactivate party.');
 		});
 	}
 
@@ -79,9 +89,11 @@ class RestaurantMain extends Component {
 			// call setState to update parties array
 			this.setState({parties: updatedParties});
 			// alert user that their request was successful
+			this.msg.success('SMS successfully delivered.');
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
+			this.msg.error('Error: Unable to deliver SMS');
 		});
 	}
 
@@ -101,29 +113,34 @@ class RestaurantMain extends Component {
 			// call setState to update parties array
 			this.setState({parties: updatedParties});
 			// alert user that their request was successful
+			this.msg.success('Party data successfully updated.');
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
+			this.msg.error('Error: Unable to update party arrived table data.');
 		});
 	}
 
   render() {
   	const { parties, restaurant_id } = this.state;
 		return (
-			<Switch>
-				<Route exact path="/restaurant/:id/dashboard" render={props => 
-					<QueueDashboard
-						parties={parties}
-						handleDeactivate={this.handleDeactivate}
-						handleAlertSMS={this.handleAlertSMS}
-						handleArriveTable={this.handleArriveTable}
-					/>
-				}/>
-				<Route exact path="/restaurant/:id/parties/add" render={props => (
-					<PartyForm/>
-				)}/>
-      	<Redirect exact to={`/restaurant/${restaurant_id}/dashboard`}/>
-			</Switch>
+			<div>
+				<AlertContainer ref={a => this.msg = a} {...this.state.alertOptions} />
+				<Switch>
+					<Route exact path="/restaurant/:id/dashboard" render={props => 
+						<QueueDashboard
+							parties={parties}
+							handleDeactivate={this.handleDeactivate}
+							handleAlertSMS={this.handleAlertSMS}
+							handleArriveTable={this.handleArriveTable}
+						/>
+					}/>
+					<Route exact path="/restaurant/:id/parties/add" render={props => (
+						<PartyForm/>
+					)}/>
+	      	<Redirect exact to={`/restaurant/${restaurant_id}/dashboard`}/>
+				</Switch>
+			</div>
 		);
 	}
 }
