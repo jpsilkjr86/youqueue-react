@@ -11,16 +11,6 @@ const yqh = {
 		getAllParties(restaurant_id) {
 			// returns thenable promise that resolves with retrieved parties
 			return Party.find({restaurant_id: restaurant_id, is_active: true}).exec();
-
-			// // returns thenable promise that resolves with retrieved parties
-			// return new Promise ( (resolve, reject) => {
-			// 	Party.find({restaurant_id: restaurant_id, is_active: true}).exec
-			// 	.then(results => {
-			// 		resolve(results);
-			// 	}).catch(err => {
-			// 		reject(err);
-			// 	})
-			// end of returned promise
 		}, // end of getAllParties()
 		seedParties (restaurant_id) {
 			testData = [{
@@ -55,7 +45,16 @@ const yqh = {
 				promises.push(seed.save());
 			}
 			return Promise.all(promises);
-		} // end of seedParties()
+		}, // end of seedParties()
+		cancelParty(_id) {
+			return Party.findOneAndUpdate({_id}, {is_active: false}, {new: true}).exec();
+		},
+		arrivedTable(_id) {
+			return Party.findOneAndUpdate({_id}, {arrived_table: true}, {new: true}).exec();
+		},
+		alertedSMS(_id) {
+			return Party.findOneAndUpdate({_id}, {alerted_sms: true}, {new: true}).exec();
+		}
 	}, // end of dbHelperPrototype
 	// factory function for creating dbHelper object
 	createDatabaseHelper() {

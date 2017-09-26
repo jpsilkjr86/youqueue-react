@@ -30,4 +30,34 @@ module.exports = app => {
 			res.json(err);
 		});
 	});
+
+	// route for posting arrived_table = true
+	app.post('/party/:id/arrived_table', (req, res) => {
+		dbHelper.arrivedTable(req.params.id).then(newDoc => {
+			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
+
+	// route for alerting sms
+	app.post('/party/:id/alert_sms', (req, res) => {
+		dbHelper.alertedSMS(req.params.id).then(newDoc => {
+			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
+
+	// route for posting is_active = false
+	app.post('/party/:id/deactivate', (req, res) => {
+		dbHelper.deactivateParty(req.params.id).then(newDoc => {
+			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
 };
