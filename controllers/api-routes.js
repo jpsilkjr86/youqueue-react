@@ -32,7 +32,7 @@ module.exports = app => {
 	});
 
 	// route for posting arrived_table = true
-	app.post('/party/:id/arrived_table', (req, res) => {
+	app.post('/party/:id/arrive_table', (req, res) => {
 		dbHelper.arrivedTable(req.params.id).then(newDoc => {
 			res.json(newDoc);
 		}).catch(err => {

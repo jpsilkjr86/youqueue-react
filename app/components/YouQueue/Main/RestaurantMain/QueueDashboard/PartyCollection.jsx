@@ -8,7 +8,13 @@ import PartyItem from './PartyCollection/PartyItem.jsx';
 const PartyCollection = props => (
 	<ul className="collection">
   	{props.parties.map((party, i) => (
-  		<PartyItem key={i} party={party}/>
+  		<PartyItem 
+  			key={i}
+  			party={party}
+				handleDeactivate={props.handleDeactivate}
+				handleAlertSMS={props.handleAlertSMS}
+				handleArriveTable={props.handleArriveTable}
+  		/>
   	))}
 	</ul>
 	

@@ -46,7 +46,7 @@ const yqh = {
 			}
 			return Promise.all(promises);
 		}, // end of seedParties()
-		cancelParty(_id) {
+		deactivateParty(_id) {
 			return Party.findOneAndUpdate({_id}, {is_active: false}, {new: true}).exec();
 		},
 		arrivedTable(_id) {

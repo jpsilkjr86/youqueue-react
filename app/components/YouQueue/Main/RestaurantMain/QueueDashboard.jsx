@@ -7,10 +7,15 @@ import DashboardContainer from '../DashboardContainer.jsx';
 import PartyCollection from './QueueDashboard/PartyCollection.jsx';
 
 // declares QueueDashboard pure functional component, which will be this file's export
-const QueueDashboard = ({parties}) => (
+const QueueDashboard = props => (
 	<DashboardContainer title="You-Queue Dashboard">
-  	{parties.length > 0 ? (
-  		<PartyCollection parties={parties}/>
+  	{props.parties.length > 0 ? (
+  		<PartyCollection
+  			parties={props.parties}
+				handleDeactivate={props.handleDeactivate}
+				handleAlertSMS={props.handleAlertSMS}
+				handleArriveTable={props.handleArriveTable}
+  		/>
   	) : (
   		<div className="center">
   			<Link to="/restaurant/test/parties/add" className="btn-large center">ADD CUSTOMER</Link>
