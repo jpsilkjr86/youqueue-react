@@ -80,4 +80,14 @@ module.exports = app => {
 			res.json(err);
 		});
 	});
+
+	// route for adding the party***********
+	app.post('/restaurant/:id/parties/add', (req, res) => {
+		dbHelper.addParty(req.body).then(newDoc => {
+			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
 };

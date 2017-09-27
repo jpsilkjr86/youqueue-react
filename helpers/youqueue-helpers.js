@@ -46,6 +46,10 @@ const yqh = {
 			}
 			return Promise.all(promises);
 		}, // end of seedParties()
+		addParty(newPartyData) {
+			const newParty = new Party(newPartyData);
+			return newParty.save();
+		},
 		deactivateParty(_id) {
 			return Party.findOneAndUpdate({_id}, {is_active: false}, {new: true}).exec();
 		},
