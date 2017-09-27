@@ -123,14 +123,14 @@ class RestaurantMain extends Component {
 			// alert user that their request was successful
 			this.msg.success(
 				<AlertWithUndo 
-					msg="Party status set to arrived-at-table!"
+					msg="Party status set to arrived!"
 					handler={this.handleUndoArrived}
 					_id={partyId}
 			/>);
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
-			this.msg.error('Error: Unable to update party arrived table data.');
+			this.msg.error('Error: Unable to update party arrived status.');
 		});
 	}
 
@@ -152,7 +152,7 @@ class RestaurantMain extends Component {
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
-			this.msg.error('Error: Unable to undo arrived table.');
+			this.msg.error('Error: Unable to undo arrived status.');
 		});
 	}
 
@@ -166,11 +166,11 @@ class RestaurantMain extends Component {
 		}).then( ({data}) => {
 			// updates parties array with response data
 			this.setState({parties: data});
-			this.msg.success('Party reactivated.');			
+			this.msg.success('Party reactivated!');			
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
-			this.msg.error('Error: Unable to undo arrived table.');
+			this.msg.error('Error: Unable to undo deactivation.');
 		});
 	}
 
