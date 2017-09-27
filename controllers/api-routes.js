@@ -31,6 +31,16 @@ module.exports = app => {
 		});
 	});
 
+	// route for getting party data by id
+	app.get('/party/:id', (req, res) => {
+		dbHelper.getPartyData(req.params.id).then(partyData => {
+			res.json(partyData);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
+
 	// route for posting arrived_table = true
 	app.post('/party/:id/arrive_table', (req, res) => {
 		dbHelper.arrivedTable(req.params.id).then(newDoc => {

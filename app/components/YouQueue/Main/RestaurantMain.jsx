@@ -2,12 +2,14 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-// imports supplementary AlertContainer component from react-alert
-import AlertContainer from 'react-alert'
+// imports supplementary AlertContainer component from react-alert and Modal from materialize
+import AlertContainer from 'react-alert';
+import { Modal } from 'react-materialize';
 
 // imports children components
 import QueueDashboard from './RestaurantMain/QueueDashboard.jsx';
 import PartyForm from './RestaurantMain/PartyForm.jsx';
+import SMSModal from './RestaurantMain/SMSModal.jsx';
 
 // imports axios for ajax calls
 import axios from 'axios';
@@ -28,7 +30,9 @@ class RestaurantMain extends Component {
 		    theme: 'light',
 		    time: 5000,
 		    transition: 'scale'
-		  }
+		  },
+		  showSMSModal: false,
+		  partyToSendSMS: null
 		};
 
 		this.handleDeactivate = this.handleDeactivate.bind(this);
@@ -36,6 +40,7 @@ class RestaurantMain extends Component {
 		this.handleArriveTable = this.handleArriveTable.bind(this);
 		this.handleUndoArrived = this.handleUndoArrived.bind(this);
 		this.handleUndoDeactivate = this.handleUndoDeactivate.bind(this);
+		this.showSMSModal = this.showSMSModal.bind(this);
 	}
 
 	// called once the component mounts for the first time
@@ -83,26 +88,39 @@ class RestaurantMain extends Component {
 
 	// handles deactivate party functionality
 	handleAlertSMS(partyId) {
-		// performs axios post request which returns a promise
-		axios.post(`/party/${partyId}/alert_sms`).then( ({data}) => {
-			// grabs parties array through destructuring assignment
-			const { parties } = this.state;
-			// saves updatedParty equal to the updated document
-			const updatedParty = data;
-			// saves updated as new array equal to parties array but
-			// with the updated document replacing its original value
-			const updatedParties = parties.map((originalParty, i) => 
-				originalParty._id === partyId ? updatedParty : originalParty
-			);
-			// call setState to update parties array
-			this.setState({parties: updatedParties});
-			// alert user that their request was successful
-			this.msg.success('SMS delivered!');
+		// retrieves party data using partyId argument
+		axios.get(`/party/${partyId}`).then( ({data}) => {
+			// sets state of partyToSendSMS and showSMSModal so modal is triggered
+			this.setState({
+				partyToSendSMS: data,
+				showSMSModal: true
+			});
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to deliver SMS');
 		});
+
+		// // performs axios post request which returns a promise
+		// axios.post(`/party/${partyId}/alert_sms`).then( ({data}) => {
+		// 	// grabs parties array through destructuring assignment
+		// 	const { parties } = this.state;
+		// 	// saves updatedParty equal to the updated document
+		// 	const updatedParty = data;
+		// 	// saves updated as new array equal to parties array but
+		// 	// with the updated document replacing its original value
+		// 	const updatedParties = parties.map((originalParty, i) => 
+		// 		originalParty._id === partyId ? updatedParty : originalParty
+		// 	);
+		// 	// call setState to update parties array
+		// 	this.setState({parties: updatedParties});
+		// 	// alert user that their request was successful
+		// 	this.msg.success('SMS delivered!');
+		// }).catch(err => {
+		// 	console.log(err);
+		// 	// alert user that there was an error processing the request
+		// 	this.msg.error('Error: Unable to deliver SMS');
+		// });
 	}
 
 	// handles deactivate party functionality
@@ -166,7 +184,7 @@ class RestaurantMain extends Component {
 		}).then( ({data}) => {
 			// updates parties array with response data
 			this.setState({parties: data});
-			this.msg.success('Party reactivated!');			
+			this.msg.success('Party reactivated!');
 		}).catch(err => {
 			console.log(err);
 			// alert user that there was an error processing the request
@@ -174,11 +192,25 @@ class RestaurantMain extends Component {
 		});
 	}
 
+	showSMSModal() {
+		// using jquery for using modals programatically, in accordance
+		// with react-materialize documentation:
+		// https://react-materialize.github.io/#/modals
+		// https://github.com/react-materialize/react-materialize/issues/246
+		$('#sms-modal').modal('open');
+	}
+
   render() {
   	const { parties, restaurant_id } = this.state;
 		return (
 			<div>
+				{/* AlertContainer componet at top for rendering react-alert */}
 				<AlertContainer ref={a => this.msg = a} {...this.state.alertOptions} />
+				{/* modal conditionally rendered when showSMSModal value is true */}
+				{ this.state.showSMSModal == true && 
+					<SMSModal party={this.state.partyToSendSMS}/>
+				}
+				{/*<button className="btn" onClick={() => this.showSMSModal()}>Show Modal</button>*/}
 				<Switch>
 					<Route exact path="/restaurant/:id/dashboard" render={props => 
 						<QueueDashboard

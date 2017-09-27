@@ -46,6 +46,9 @@ const yqh = {
 			}
 			return Promise.all(promises);
 		}, // end of seedParties()
+		getPartyData(_id) {
+			return Party.findById({_id}).exec();
+		},
 		deactivateParty(_id) {
 			return Party.findOneAndUpdate({_id}, {is_active: false}, {new: true}).exec();
 		},
