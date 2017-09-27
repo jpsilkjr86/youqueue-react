@@ -29,7 +29,6 @@ class PartyForm extends Component {
 	handleChange(event) {
 		
     const { value, name } = event.target;
-    
     // sets state of whatever the input name is to the value of event object
     this.setState({
       [name]: value
@@ -38,7 +37,7 @@ class PartyForm extends Component {
 	}
 
 	handleSubmitForm(event) {
-		console.log(this.state);
+		// console.log(this.state);
 		// prevents default form behavior
     event.preventDefault();
 
@@ -52,8 +51,10 @@ class PartyForm extends Component {
 			first_name: "",
 			last_name: ""
     });
-    // sends query and results to parent through inherited function onSearch()
-    this.props.onSearch(party);
+    
+    // call parent function from RestaurantMain.jsx 
+    this.props.handleAddParty(party);
+
 
 	}
 
