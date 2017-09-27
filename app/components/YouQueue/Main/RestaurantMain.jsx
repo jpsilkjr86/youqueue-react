@@ -4,7 +4,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 // imports supplementary AlertContainer component from react-alert and Modal from materialize
 import AlertContainer from 'react-alert';
-import { Modal } from 'react-materialize';
 
 // imports children components
 import QueueDashboard from './RestaurantMain/QueueDashboard.jsx';
@@ -231,7 +230,7 @@ class RestaurantMain extends Component {
 				<AlertContainer ref={a => this.msg = a} {...this.state.alertOptions} />
 				{/* SMSModal here ready to be dipslayed as needed */}
 				<SMSModal id="sms-modal" party={this.state.partyToSendSMS}/>
-				{/*<button className="btn" onClick={() => this.showSMSModal()}>Show Modal</button>*/}
+				{/* Switch route for principle components in RestaurantMain */}
 				<Switch>
 					<Route exact path="/restaurant/:id/dashboard" render={props => 
 						<QueueDashboard
