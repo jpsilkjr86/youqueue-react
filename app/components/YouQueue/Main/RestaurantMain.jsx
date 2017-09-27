@@ -40,6 +40,7 @@ class RestaurantMain extends Component {
 		this.handleUndoArrived = this.handleUndoArrived.bind(this);
 		this.handleUndoDeactivate = this.handleUndoDeactivate.bind(this);
 		this.showSMSModal = this.showSMSModal.bind(this);
+		this.handleAddParty = this.handleAddParty.bind(this);
 	}
 
 	// called once the component mounts for the first time
@@ -196,6 +197,32 @@ class RestaurantMain extends Component {
 		$('#sms-modal').modal('open');
 	}
 
+	handleAddParty(data){
+		console.log(data); 
+		const { restaurant_id } = this.state;
+		//builds new party data. 
+		const newPartyData = {
+			party_name: data.party_name,
+			party_size: data.party_size,
+			phone_number: data.phone_number,
+			reserved_under: data.first_name,
+			email: data.email,
+			occasion: [],
+			restaurant_id: restaurant_id
+		};
+
+		// preform axios post request with new party data
+		axios.post(`/restaurant/${restaurant_id}/parties/add`, newPartyData).then(response => {
+			// return an axios get request grabbing all the parties data
+			return axios.get(`/restaurant/${restaurant_id}/parties/all`);
+		}).then(({data}) => {
+			this.setState({ parties: data});
+			console.log(data);
+		}).catch(err => {
+			console.log(err);
+		});
+	}
+
   render() {
   	const { parties, restaurant_id } = this.state;
 		return (
@@ -215,7 +242,7 @@ class RestaurantMain extends Component {
 						/>
 					}/>
 					<Route exact path="/restaurant/:id/parties/add" render={props => (
-						<PartyForm/>
+						<PartyForm handleAddParty={this.handleAddParty}/>
 					)}/>
 	      	<Redirect exact to={`/restaurant/${restaurant_id}/dashboard`}/>
 				</Switch>
