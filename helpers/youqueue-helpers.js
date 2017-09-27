@@ -49,6 +49,10 @@ const yqh = {
 		getPartyData(_id) {
 			return Party.findById({_id}).exec();
 		},
+		addParty(newPartyData) {
+			const newParty = new Party(newPartyData);
+			return newParty.save();
+		},
 		deactivateParty(_id) {
 			return Party.findOneAndUpdate({_id}, {is_active: false}, {new: true}).exec();
 		},
