@@ -60,4 +60,24 @@ module.exports = app => {
 			res.json(err);
 		});
 	});
+
+	// route for undoing deactivate
+	app.post('/party/:id/deactivate/undo', (req, res) => {
+		dbHelper.undoDeactivate(req.params.id).then(newDoc => {
+			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
+
+	// route for undoing arrived table
+	app.post('/party/:id/arrive_table/undo', (req, res) => {
+		dbHelper.undoArrived(req.params.id).then(newDoc => {
+			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
 };

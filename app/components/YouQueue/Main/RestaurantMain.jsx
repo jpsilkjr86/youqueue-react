@@ -26,7 +26,7 @@ class RestaurantMain extends Component {
 		    offset: 14,
 		    position: 'top right',
 		    theme: 'light',
-		    time: 4000,
+		    time: 5000,
 		    transition: 'scale'
 		  }
 		};
@@ -71,6 +71,7 @@ class RestaurantMain extends Component {
 				<AlertWithUndo
 					msg="Party deactivated."
 					handler={this.handleUndoDeactivate}
+					_id={partyId}
 				/>
 			);
 		}).catch(err => {
@@ -122,8 +123,9 @@ class RestaurantMain extends Component {
 			// alert user that their request was successful
 			this.msg.success(
 				<AlertWithUndo 
-					msg="Party data updated!"
+					msg="Party status set to arrived-at-table!"
 					handler={this.handleUndoArrived}
+					_id={partyId}
 			/>);
 		}).catch(err => {
 			console.log(err);
@@ -132,12 +134,44 @@ class RestaurantMain extends Component {
 		});
 	}
 
-	handleUndoArrived() {
-		console.log('handle undo arrived');
+	handleUndoArrived(partyId) {
+		// performs axios post request which returns a promise
+		axios.post(`/party/${partyId}/arrive_table/undo`).then( ({data}) => {
+			// grabs parties array through destructuring assignment
+			const { parties } = this.state;
+			// saves updatedParty equal to the updated document
+			const updatedParty = data;
+			// saves updated as new array equal to parties array but
+			// with the updated document replacing its original value
+			const updatedParties = parties.map((originalParty, i) => 
+				originalParty._id === partyId ? updatedParty : originalParty
+			);
+			// call setState to update parties array
+			this.setState({parties: updatedParties});
+			this.msg.success('Party reset to not-yet-arrived.');	
+		}).catch(err => {
+			console.log(err);
+			// alert user that there was an error processing the request
+			this.msg.error('Error: Unable to undo arrived table.');
+		});
 	}
 
-	handleUndoDeactivate() {
-		console.log('handle undo deactivate');
+	handleUndoDeactivate(partyId) {
+		// performs axios post request which returns a promise
+		axios.post(`/party/${partyId}/deactivate/undo`).then( response => {
+			// saves restaurant_id as more manageable constable
+			const { restaurant_id } = this.state;
+			// performs axios request to get all active parties by restaurant id
+			return axios.get(`/restaurant/${restaurant_id}/parties/all`);
+		}).then( ({data}) => {
+			// updates parties array with response data
+			this.setState({parties: data});
+			this.msg.success('Party reactivated.');			
+		}).catch(err => {
+			console.log(err);
+			// alert user that there was an error processing the request
+			this.msg.error('Error: Unable to undo arrived table.');
+		});
 	}
 
   render() {
@@ -164,23 +198,11 @@ class RestaurantMain extends Component {
 	}
 } // end of RestaurantMain
 
-// RestaurantMain sub-components
-const AlertWithUndo = ({msg, handler}) => (
+// RestaurantMain sub-component that contains undo button
+const AlertWithUndo = ({msg, handler, _id}) => (
 	<div>
 		<p>{msg}</p>
-		<a className="btn-flat custom-btn-small" onClick={handler}>Click to Undo</a>	
-	</div>
-);
-
-const UndoDeactivate = ({msg, handler}) => (
-	<div>
-		{msg}
-		<button className="waves-effect waves-light btn" onClick={handler}>
-		Undo
-		</button>
-		<a className="btn-floating waves-effect waves-light red right" onClick={handler}>
-			<i className="material-icons">undo</i>
-		</a>
+		<a className="btn-flat custom-btn-small" onClick={() => handler(_id)}>Click to Undo</a>	
 	</div>
 );
 

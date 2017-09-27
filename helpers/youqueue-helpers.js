@@ -54,6 +54,12 @@ const yqh = {
 		},
 		alertedSMS(_id) {
 			return Party.findOneAndUpdate({_id}, {alerted_sms: true}, {new: true}).exec();
+		},
+		undoDeactivate(_id) {
+			return Party.findOneAndUpdate({_id}, {is_active: true}, {new: true}).exec();
+		},
+		undoArrived(_id) {
+			return Party.findOneAndUpdate({_id}, {arrived_table: false}, {new: true}).exec();
 		}
 	}, // end of dbHelperPrototype
 	// factory function for creating dbHelper object
