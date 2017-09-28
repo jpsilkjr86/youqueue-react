@@ -2,36 +2,12 @@
 const TMClient = require('textmagic-rest-client'),
 			fs = require('fs');	
 
-//first check to see if username and apikey exist in production environment
-if (process.env.TEXTMAGIC_USERNAME && process.env.TEXTMAGIC_APIKEY) {
-  //if so, configure TMClient accordingly
-  console.log('CONFIGURING TEXTMAGIC IN PRODUCTION MODE');
-  const { TEXTMAGIC_USERNAME, TEXTMAGIC_APIKEY } = process.env;
-  var youQueueSMS = new TMClient(TEXTMAGIC_USERNAME, TEXTMAGIC_APIKEY);
-} // else check to see if config.json has TextMagic credentials
-else if (fs.existsSync('./config/config.json')){
-  //configure TMClient using development-mode data
-  console.log('CONFIGURING TEXTMAGIC IN DEVELOPMENT MODE');
-  const { username, apikey } = require('../config/config.json')["textmagic"];
-  var youQueueSMS = new TMClient(username, apikey);
-} else {
-  // if none of the above work then throws an error
-  throw new Error('ERROR: SMS API UNABLE TO CONFIGURE.');
-}
-
-console.log(youQueueSMS);
-// youQueueSMS.Messages.send({text: "Hello", phones: "14803885693"}, (err, res_sms) => {
-// 	if (err) {
-// 		console.log(err);
-// 	}	
-// 	console.log(res_sms);
-// });
-
 // imports database models
 const Party = require('../models/Party.js');
 
 // instantiates object to be exported
 const yqh = {
+	// prototype for youqueue's dbHelper object
 	dbHelperPrototype: {
 		// gets all active parties that match a restaurant ID
 		getAllParties(restaurant_id) {
@@ -98,7 +74,43 @@ const yqh = {
 	// factory function for creating dbHelper object
 	createDatabaseHelper() {
 		return Object.create(yqh.dbHelperPrototype);
-	} // end of yqh.createDatabaseHelper()
+	}, // end of yqh.createDatabaseHelper()
+	// factory function for creating YouQueueSMS helper object
+	createYouQueueSMS() {
+		// ======== 1: CONFIGURE TEXTMAGIC API ========
+		let client;
+		//first check to see if username and apikey exist in production environment
+		if (process.env.TEXTMAGIC_USERNAME && process.env.TEXTMAGIC_APIKEY) {
+		  //if so, configure TMClient accordingly
+		  console.log('CONFIGURING TEXTMAGIC IN PRODUCTION MODE');
+		  const { TEXTMAGIC_USERNAME, TEXTMAGIC_APIKEY } = process.env;
+		  client = new TMClient(TEXTMAGIC_USERNAME, TEXTMAGIC_APIKEY);
+		} // else check to see if config.json has TextMagic credentials
+		else if (fs.existsSync('./config/config.json')){
+		  //configure TMClient using development-mode data
+		  console.log('CONFIGURING TEXTMAGIC IN DEVELOPMENT MODE');
+		  const { username, apikey } = require('../config/config.json')["textmagic"];
+		  client = new TMClient(username, apikey);
+		} else {
+		  // if none of the above work then throws an error
+		  throw new Error('ERROR: SMS API UNABLE TO CONFIGURE.');
+		}
+		// ======== 2: SET UP YOUQUEUE-SMS PROTOTYPE ========
+		youQueueSMSPrototype = {
+			send(message, phone_number) {
+				return new Promise( (resolve, reject) => {
+					client.Messages.send({text: message, phones: phone_number}, (err, res_sms) => {
+						if (err) {
+							return reject(err);
+						}	
+						resolve(res_sms);
+					});
+				});
+			}
+		};
+		// ======== 3: RETURN SMS HELPER OBJECT ========
+		return Object.create(youQueueSMSPrototype);
+	} // end of yqh.createYouQueueSMS()
 }; // end of yqh
 
 // exports youqueue helpers object

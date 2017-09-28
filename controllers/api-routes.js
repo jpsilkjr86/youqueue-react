@@ -1,7 +1,10 @@
 // imports youqueue helpers object (yqh = youqueue helpers)
 const yqh = require('../helpers/youqueue-helpers.js');
-// creates database helper object
+// creates youqueue helper objects: for db management and sms messaging
 const dbHelper = yqh.createDatabaseHelper();
+const youQueueSMS = yqh.createYouQueueSMS();
+
+console.log(youQueueSMS);
 
 // exports as function which takes in app as parameter
 module.exports = app => {
@@ -95,6 +98,18 @@ module.exports = app => {
 	app.post('/restaurant/:id/parties/add', (req, res) => {
 		dbHelper.addParty(req.body).then(newDoc => {
 			res.json(newDoc);
+		}).catch(err => {
+			console.log(err);
+			res.json(err);
+		});
+	});
+
+	// route for testing SMS
+	app.post('/test/sms', (req, res) => {
+		// test text message method
+		youQueueSMS.send('test test', '14803885693').then(response => {
+			console.log(response);
+			res.json(response);
 		}).catch(err => {
 			console.log(err);
 			res.json(err);
