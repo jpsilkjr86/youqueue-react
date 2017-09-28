@@ -1,10 +1,7 @@
 // imports youqueue helpers object (yqh = youqueue helpers)
 const yqh = require('../helpers/youqueue-helpers.js');
-// creates youqueue helper objects: for db management and sms messaging
+// creates youqueue helper object for db management
 const dbHelper = yqh.createDatabaseHelper();
-const youQueueSMS = yqh.createYouQueueSMS();
-
-console.log(youQueueSMS);
 
 // exports as function which takes in app as parameter
 module.exports = app => {
@@ -106,6 +103,9 @@ module.exports = app => {
 
 	// route for testing SMS
 	app.post('/test/sms', (req, res) => {
+		// creates youQueueSMS instance (only create as needed)
+		const youQueueSMS = yqh.createYouQueueSMS();
+		console.log(youQueueSMS);
 		// test text message method
 		youQueueSMS.send('test test', '14803885693').then(response => {
 			console.log(response);
