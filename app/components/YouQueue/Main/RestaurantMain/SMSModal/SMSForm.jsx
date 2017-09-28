@@ -1,35 +1,47 @@
 // imports react component classNamees
 import React, { Component } from 'react';
 
+// react-materialize components
+import { Input, Textarea } from 'react-materialize';
+
 // declares PartyForm component as stateful class component, which will be this file's export.
 class PartyForm extends Component {
 
 	constructor(props) {
 		super(props);
 
+		const sms_message = 'You-Queue Alert for ' + props.party.party_name + ': ' 
+		          	+ 'Your table is ready! Please come at your earliest convenience. '
+		          	+ 'Enjoy your meal! (AUTO-SMS:Do not reply!)';
+		const charactersRemaining = 140 - sms_message.length;
+
 		// set initial state 
 	  this.state = { 
-			party_name: "",
-			party_size: "",
-			phone_number: "",
-			email: "",
-			first_name: "",
-			last_name: ""
+			sms_message: sms_message,
+		  charactersRemaining: charactersRemaining
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmitForm = this.handleSubmitForm.bind(this);
 
-	} 
+	}
 
 	handleChange(event) {
 		
-    const { value, name } = event.target;
+    const newSMSMsg = event.target.value;
+
+    const newCharRemainging = 140 - newSMSMsg.length;
+
     // sets state of whatever the input name is to the value of event object
     this.setState({
-      [name]: value
+    	sms_message: newSMSMsg,
+    	charactersRemaining: newCharRemainging
     });
 
+	}
+
+	componentWillReceiveProps(data) {
+		console.log(data);
 	}
 
 	handleSubmitForm(event) {
@@ -55,14 +67,47 @@ class PartyForm extends Component {
 	}
 
   render() {
-  	const { party } = this.props;
+  	const { party } = this.props,
+  		{ sms_message, charactersRemaining } = this.state;
   	return (
-  		<form>
-				<legend>Notify {party.party_name} their table is ready!</legend>
-			</form>
+  		<div className="card-panel blue-grey">
+  			<div className="card-content white-text">
+	  			<div className="row">
+		  			<form className="col s12" onSubmit={this.handleSubmitForm}>
+		  				<div className="row">
+				        <div className="col s12">
+				        	<label htmlFor="sms_message">SMS Messsage Content - Customizable!</label>
+				        </div>
+				  			<div className="input-field col s12">
+				          <textarea
+				          	className="materialize-textarea"
+				          	name="sms_message"
+				          	value={sms_message}
+				          	onChange={this.handleChange}
+				          />
+				        </div>
+				        <div className="col s12 center">
+				        	<p className="left"><em>Characters remaining: {charactersRemaining}</em></p>
+				          <button className="btn waves-effect waves-light right" type="submit">
+				          	Send Message
+				          </button>
+			        	</div>
+				  		</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		);
 	}
 }
 
 // exports PartyForm component for other files to use
 export default PartyForm;
+
+
+
+		          	//{/*className="materialize-textarea"*/}
+
+		  				// <legend>
+		  				// 	<p>Notify <strong>{party.party_name}</strong> their table is ready!</p>
+		  				// </legend>
