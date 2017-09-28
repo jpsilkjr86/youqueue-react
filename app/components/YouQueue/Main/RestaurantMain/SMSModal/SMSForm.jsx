@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 // react-materialize components
-import { Input, Textarea } from 'react-materialize';
+// import { Input } from 'react-materialize';
 
 // declares PartyForm component as stateful class component, which will be this file's export.
 class PartyForm extends Component {
@@ -26,6 +26,21 @@ class PartyForm extends Component {
 
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+		// updates like how the constructor sets state from received props
+		const sms_message = 'You-Queue Alert for ' + nextProps.party.party_name + ': ' 
+		          	+ 'Your table is ready! Please come at your earliest convenience. '
+		          	+ 'Enjoy your meal! (AUTO-SMS:Do not reply!)';
+		const charactersRemaining = 140 - sms_message.length;
+
+		// updates state
+	  this.state = { 
+			sms_message: sms_message,
+		  charactersRemaining: charactersRemaining
+		};
+	}
+
 	handleChange(event) {
 		
     const newSMSMsg = event.target.value;
@@ -38,10 +53,6 @@ class PartyForm extends Component {
     	charactersRemaining: newCharRemainging
     });
 
-	}
-
-	componentWillReceiveProps(data) {
-		console.log(data);
 	}
 
 	handleSubmitForm(event) {
