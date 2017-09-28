@@ -1,5 +1,31 @@
-// imports axios for promisified (thenable) server requests
-const axios = require('axios');
+// imports textmagic for promisified (thenable) server requests
+const TMClient = require('textmagic-rest-client'),
+			fs = require('fs');	
+
+//first check to see if username and apikey exist in production environment
+if (process.env.TEXTMAGIC_USERNAME && process.env.TEXTMAGIC_APIKEY) {
+  //if so, configure TMClient accordingly
+  console.log('CONFIGURING TEXTMAGIC IN PRODUCTION MODE');
+  const { TEXTMAGIC_USERNAME, TEXTMAGIC_APIKEY } = process.env;
+  var youQueueSMS = new TMClient(TEXTMAGIC_USERNAME, TEXTMAGIC_APIKEY);
+} // else check to see if config.json has TextMagic credentials
+else if (fs.existsSync('./config/config.json')){
+  //configure TMClient using development-mode data
+  console.log('CONFIGURING TEXTMAGIC IN DEVELOPMENT MODE');
+  const { username, apikey } = require('../config/config.json')["textmagic"];
+  var youQueueSMS = new TMClient(username, apikey);
+} else {
+  // if none of the above work then throws an error
+  throw new Error('ERROR: SMS API UNABLE TO CONFIGURE.');
+}
+
+console.log(youQueueSMS);
+// youQueueSMS.Messages.send({text: "Hello", phones: "14803885693"}, (err, res_sms) => {
+// 	if (err) {
+// 		console.log(err);
+// 	}	
+// 	console.log(res_sms);
+// });
 
 // imports database models
 const Party = require('../models/Party.js');

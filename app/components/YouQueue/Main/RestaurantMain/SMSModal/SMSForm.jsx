@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 // react-materialize components
 // import { Input } from 'react-materialize';
 
-// declares PartyForm component as stateful class component, which will be this file's export.
-class PartyForm extends Component {
+// declares SMSForm component as stateful class component, which will be this file's export.
+class SMSForm extends Component {
 
 	constructor(props) {
 		super(props);
@@ -35,10 +35,10 @@ class PartyForm extends Component {
 		const charactersRemaining = 140 - sms_message.length;
 
 		// updates state
-	  this.state = { 
+	  this.setState({ 
 			sms_message: sms_message,
 		  charactersRemaining: charactersRemaining
-		};
+		});
 	}
 
 	handleChange(event) {
@@ -112,8 +112,8 @@ class PartyForm extends Component {
 	}
 }
 
-// exports PartyForm component for other files to use
-export default PartyForm;
+// exports SMSForm component for other files to use
+export default SMSForm;
 
 
 
