@@ -101,13 +101,20 @@ module.exports = app => {
 		});
 	});
 
-	// route for testing SMS
-	app.post('/test/sms', (req, res) => {
+	// route for send SMS to party
+	app.post('/party/:id/send_sms', (req, res) => {
 		// creates youQueueSMS instance (only create as needed)
 		const youQueueSMS = yqh.createYouQueueSMS();
 		console.log(youQueueSMS);
-		// test text message method
-		youQueueSMS.send('test test', '14803885693').then(response => {
+		// finding particular party based on the id from params
+		dbHelper.getPartyData(req.params.id).then(party => {
+			// then get the phone number info from that party data
+			const phone = party.phone_number;
+			// get sms message from the incoming client request
+			const sms_msg = req.body.sms_message;
+			// return youQueueSMS message
+			return youQueueSMS.send(sms_msg, phone);
+		}).then(response => {
 			console.log(response);
 			res.json(response);
 		}).catch(err => {
