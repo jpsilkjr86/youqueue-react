@@ -71,6 +71,10 @@ const yqh = {
 		},
 		undoArrived(_id) {
 			return Party.findOneAndUpdate({_id}, {arrived_table: false}, {new: true}).exec();
+		},
+		getUser(_id) {
+			// first checks restaurant user type (can add customer search later if user == null)
+			return RestaurantUser.findById({_id}).exec();
 		}
 	}, // end of dbHelperPrototype
 	// factory function for creating dbHelper object
