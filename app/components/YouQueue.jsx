@@ -9,6 +9,9 @@ import Login from './YouQueue/Login.jsx';
 import Footer from './YouQueue/Footer.jsx';
 import MainContainer from './YouQueue/MainContainer.jsx';
 
+// imports axios for http requests
+import axios from 'axios';
+
 // declares YouQueue component as ES6 class, which will be this file's export.
 // YouQueue will be the parent component that stores logged-in state,
 // which is necessary info that will determine all other app behavior.
@@ -25,6 +28,8 @@ class YouQueue extends Component {
 
 		this.handleLogIn = this.handleLogIn.bind(this);
 		this.handleLogOut = this.handleLogOut.bind(this);
+		this.loginGuest = this.loginGuest.bind(this);
+		this.signupGuest = this.signupGuest.bind(this);
 	}
 
 	handleLogIn() {
@@ -44,6 +49,35 @@ class YouQueue extends Component {
 		});
 	}
 
+	loginGuest() {
+		const user = {
+			email: 'guest@g.com',
+			password: 'guest'
+		};
+		axios.post('/login/restaurant', user).then(response => {
+			console.log(response);
+		}).catch(err => {
+			console.log(err);
+		});
+	}
+
+	signupGuest() {
+		const user = {
+			email: 'guest@g.com',
+			password: 'guest',
+			first_name: 'jane',
+			last_name: 'doe',
+			restaurant_name: 'Do-Re-Mi Guest Bistro',
+			phone_number: '5555555555',
+			default_sms: 'some message'
+		};
+		axios.post('/signup/restaurant', user).then(response => {
+			console.log(response);
+		}).catch(err => {
+			console.log(err);
+		});
+	}
+
 	render() {
 		return (
 	    <div>
@@ -57,7 +91,12 @@ class YouQueue extends Component {
 	      <MainContainer>
 		      <Switch>
 			      <Route exact path="/login" render={props => 
-			      	<Login logIn={this.handleLogIn} loggedIn={this.state.loggedIn}/>
+			      	<Login
+			      		logIn={this.handleLogIn}
+			      		loggedIn={this.state.loggedIn}
+			      		loginGuest={this.loginGuest}
+			      		signupGuest={this.signupGuest}
+			      	/>
 			      }/>
 			    	{/* This route ensures user is logged in before rendering anything in Main*/}
 			      <Route path="/" render={props => (

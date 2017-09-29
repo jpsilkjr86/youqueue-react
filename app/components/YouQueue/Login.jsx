@@ -14,8 +14,20 @@ const Login = props => (
             <h2 className="card-title">Welcome to<br/>You-Queue</h2>
           </div>
           <div className="card-action center-align">
-            <a className="btn btn-flat modal-trigger waves-effect waves-light" data-target="signin-modal">SIGN IN</a>
-            <a className="btn btn-flat modal-trigger waves-effect waves-light" data-target="newuser-modal">NEW USER</a>
+            <a
+              className="btn btn-flat modal-trigger waves-effect waves-light"
+              data-target="signin-modal"
+              onClick={props.loginGuest}
+            >
+              SIGN IN
+            </a>
+            <a
+              className="btn btn-flat modal-trigger waves-effect waves-light"
+              data-target="newuser-modal"
+              onClick={props.signupGuest}
+            >
+              NEW USER
+            </a>
           </div>
         </div>
 	    </div>

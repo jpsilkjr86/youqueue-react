@@ -8,7 +8,7 @@ const express = require('express'),
   session = require('express-session'),
   passport = require('passport'),
   LocalStrategy = require('passport-local'),
-  yqh = require('../helpers/youqueue-helpers.js');
+  yqh = require('./helpers/youqueue-helpers.js');
 
 // sets up express app
 const app = express();
