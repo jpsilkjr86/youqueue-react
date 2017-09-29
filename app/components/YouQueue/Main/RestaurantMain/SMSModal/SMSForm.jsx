@@ -47,6 +47,8 @@ class SMSForm extends Component {
 
     const newCharRemainging = 140 - newSMSMsg.length;
 
+    this.button.disabled = (newCharRemainging < 0);
+
     // sets state of whatever the input name is to the value of event object
     this.setState({
     	sms_message: newSMSMsg,
@@ -99,7 +101,10 @@ class SMSForm extends Component {
 				        </div>
 				        <div className="col s12 center">
 				        	<p className="left"><em>Characters remaining: {charactersRemaining}</em></p>
-				          <button className="btn waves-effect waves-light right" type="submit">
+				          <button
+				          	className="btn waves-effect waves-light right"
+				          	type="submit"
+				          	ref={(node) => this.button = node}>
 				          	Send Message
 				          </button>
 			        	</div>
