@@ -14,7 +14,8 @@ const RestaurantUserSchema = new Schema({
   created_at: { type: Date, default: Date.now },
   // references parties for the user
   parties: [{ type: Schema.Types.ObjectId, ref: "Party" }],
-  default_sms: String
+  default_sms: String,
+  usertype: { type: String, default: 'restaurant' }
 });
 
 // creates the RestaurantUser model with the RestaurantUserSchema

@@ -33,6 +33,22 @@ class YouQueue extends Component {
 		this.signupGuest = this.signupGuest.bind(this);
 	}
 
+	componentDidMount() {
+		// checks authentication status through axios get request
+		axios.get('/login/checkauth').then(({data}) => {
+			if (data.isLoggedIn) {
+				this.setState({
+					loggedIn: true,
+					userType: data.user.usertype,
+					userId: data.user._id,
+					user: data.user
+				});
+			}
+		}).catch(err => {
+			console.log(err);
+		});
+	}
+
 	handleLogIn(user, usertype) {
 		this.setState({
 			loggedIn: true,

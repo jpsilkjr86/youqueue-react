@@ -52,4 +52,15 @@ module.exports = (app, passport) => {
 		}
 		res.json({message: 'Unable to log out: no user was logged in', user: null});
 	});
+
+	// get route for checking to see if there is an existing login session
+	app.get('/login/checkauth', (req, res) => {
+		console.log('USER REQUESTING AUTHENTICATION STATUS');
+		if (!req.user) {
+			console.log('NOT LOGGED IN. SENDING FALSE.');
+			return res.json({isLoggedIn: false, user: null});
+		}
+		console.log('USER LOGGED IN AS ' + req.user.email + '. SENDING TRUE AND USER OBJECT.');
+		res.json({isLoggedIn: true, user: req.user});
+	});
 };
