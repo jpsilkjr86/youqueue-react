@@ -3,7 +3,8 @@ const express = require('express'),
 	bodyParser = require('body-parser'),
   logger = require('morgan'),
   mongoose = require('mongoose'),
-  fs = require('fs');
+  fs = require('fs'),
+  yqh = require('../helpers/youqueue-helpers.js');
 
 // sets up express app
 const app = express();

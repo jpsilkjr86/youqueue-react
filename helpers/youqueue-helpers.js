@@ -1,9 +1,11 @@
 // imports textmagic for promisified (thenable) server requests
 const TMClient = require('textmagic-rest-client'),
-			fs = require('fs');	
+			fs = require('fs'),
+			bcrypt = require('bcryptjs');	
 
 // imports database models
-const Party = require('../models/Party.js');
+const Party = require('../models/Party.js'),
+	RestaurantUser = require('../models/RestaurantUser.js');
 
 // instantiates object to be exported
 const yqh = {
@@ -110,7 +112,69 @@ const yqh = {
 		};
 		// ======== 3: RETURN SMS HELPER OBJECT ========
 		return Object.create(youQueueSMSPrototype);
-	} // end of yqh.createYouQueueSMS()
+	}, // end of yqh.createYouQueueSMS()
+	// user login authentication helper function
+	loginAuth(email, password, usertype) {
+		// returns a promise that resolves w/ status and user object, or rejects w/ error
+		return new Promise( (resolve, reject) => {
+			// declares query as mongoose promise that depends on usertype
+			let query;
+			if (usertype === 'restaurant') {
+				query = RestaurantUser.where({email}).findOne().exec();
+			} else {
+				// early returns a promise rejection if usertype doesn't match
+				return reject('Error: no usertype specified, or usertype does not match');
+			}
+			// executes query
+			query.then(user => {				
+				// if no result is found, early returns resolve with data object
+				if (user == null) {
+					return resolve({emailMatch: false, pwMatch: false, user: null});
+				}
+				// saves db's encrypted password as locally scoped constable
+				const hash = user.password;
+				// uses bcrypt to see if password matches hash. if so, resolves with user
+				if (bcrypt.compareSync(password, hash)) {
+					return resolve({emailMatch: true, pwMatch: true, user: user});
+				}
+				// if loginAuth reaches this point, it must mean the password doesn't match
+				resolve({emailMatch: true, pwMatch: false, user: null});
+			}).catch(err => {
+				reject(err);
+			}); // end of .findOne callback
+		}); // end of returned promise
+	}, // end of yqh.loginAuth
+	// user signup authentication helper function
+	signupRestaurantAuth(email, password, userInput) {
+		// returns a promise that resolves w/ status & new user object, or rejects w/ error
+		return new Promise( (resolve, reject) => {
+			// first searches to see if username exists in database
+			RestaurantUser.where({email}).findOne().exec().then(user => {
+				// if user exists, resolve with null user and response msg
+				if (user != null) {
+					return resolve({accountExists: true, user: null});
+				}
+				// instantiates locally scoped userData from userInput; encrypts password
+				const hash = bcrypt.hashSync(password, 8);
+				const userData = {
+					email: email,
+					password: hash,
+					first_name: userInput.first_name,
+					last_name: userInput.last_name,
+					restaurant_name: userInput.restaurant_name,
+					phone_number: userInput.phone_number,
+					default_sms: userInput.default_sms
+				};
+				const newRestaurantUser = new RestaurantUser(userData);
+				// saves new user into database
+				return newRestaurantUser.save();
+			}).then(userDoc => {
+				resolve({accountExists: false, user: userDoc});
+			}).catch(err => {
+				reject(err);
+			});
+		}); // end of returned promise
+	} // end of yqh.signupRestaurantAuth
 }; // end of yqh
 
 // exports youqueue helpers object
