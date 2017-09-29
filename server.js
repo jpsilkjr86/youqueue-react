@@ -122,8 +122,13 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 // serves public directory as static, enabling html pages to link with their assets
 app.use(express.static('public'));
 
-// ============ Webpack Middleware Configurations (Development Only) ============
+// Passport, Session and cookieParser configuration with express instance
+app.use(cookieParser());
+app.use(session({secret: 'targetgumption', saveUninitialized: true, resave: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// ============ Webpack Middleware Configurations (Development Only) ============
 // first checks to make sure NODE_ENV is in development mode (ie not production mode)
 if (process.env.NODE_ENV !== 'production') {
   console.log('NODE_ENV is in development mode.'
@@ -152,7 +157,6 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-
 // ================ Connection Establishment ================
 // show any mongoose connection errors
 db.on('error', function(error) {
@@ -166,6 +170,7 @@ db.once('open', function() {
 	app.listen(port, () => {
 		console.log('App listening on port ' + port);
 		// sets up routes
+    require('./controllers/auth-routes.js')(app, passport);
 		require('./controllers/api-routes.js')(app);
 	});
 });
