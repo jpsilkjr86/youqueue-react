@@ -60,7 +60,7 @@ class SMSForm extends Component {
 		// prevents default form behavior
     event.preventDefault();
 
-    // const party = this.state;
+    const { sms_message } = this.state;
     // clears state data, triggering re-rendering of component to empty form
    //  this.setState({
    //    party_name: "",
@@ -72,7 +72,7 @@ class SMSForm extends Component {
    //  });
     
     // call parent function from RestaurantMain.jsx 
-    // this.props.handleAddParty(party);
+    this.props.send_sms(sms_message);
 
 
 	}
