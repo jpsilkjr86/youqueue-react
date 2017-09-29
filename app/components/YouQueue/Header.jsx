@@ -41,11 +41,11 @@ const Header = ({loggedIn, logIn, logOut, userId, userType}) => (
 					</a>
 					<div className="brand-logo center">WELCOME</div>
 					<ul id="nav-mobile" className="right hide-on-small-only">
-						<li><a onClick={logIn}>Sign In</a></li>
+						<li><Link to="/login">Sign In</Link></li>
 					</ul>
 					<ul className="side-nav hide-on-med-and-up" id="slide-out">
 						<li><img src="/assets/images/brand_small.png" className="slide-out-brand"/></li>
-						<li><a onClick={logIn}>Sign In</a></li>
+						<li><Link to="/login">Sign In</Link></li>
 					</ul>
 				</div>
 			</nav>

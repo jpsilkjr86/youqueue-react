@@ -116,3 +116,9 @@ module.exports = app => {
 		});
 	});
 };
+
+
+		// console.log(req.user);
+		// if (!req.user) {
+		// 	return res.send('Request denied: no user logged in.');
+		// }

@@ -20,10 +20,11 @@ class YouQueue extends Component {
 		super();
 
 		// set initial state
-    this.state = { 
+    this.state = {
 			loggedIn: false,
 			userType: null,
-			userId: null
+			userId: null,
+			user: null
 		};
 
 		this.handleLogIn = this.handleLogIn.bind(this);
@@ -32,20 +33,26 @@ class YouQueue extends Component {
 		this.signupGuest = this.signupGuest.bind(this);
 	}
 
-	handleLogIn() {
-		this.setState({ 
+	handleLogIn(user, usertype) {
+		this.setState({
 			loggedIn: true,
-			userType: 'restaurant',
-			userId: 'test'
+			userType: usertype,
+			userId: user._id,
+			user: user
 		});
 	}
 
 	handleLogOut() {
-		console.log(this.state);
-		this.setState({ 
-			loggedIn: false,
-			userType: null,
-			userId: null
+		axios.post('/logout').then(({data}) => {
+			console.log(data);
+			this.setState({
+				loggedIn: false,
+				userType: null,
+				userId: null,
+				user: null
+			});
+		}).catch(err => {
+			console.log(err);
 		});
 	}
 
@@ -54,8 +61,11 @@ class YouQueue extends Component {
 			email: 'guest@g.com',
 			password: 'guest'
 		};
-		axios.post('/login/restaurant', user).then(response => {
-			console.log(response);
+		axios.post('/login/restaurant', user).then(({data}) => {
+			if (!data.user) {
+				return console.log('Login failed');
+			}
+			this.handleLogIn(data.user, 'restaurant');
 		}).catch(err => {
 			console.log(err);
 		});
@@ -71,8 +81,11 @@ class YouQueue extends Component {
 			phone_number: '5555555555',
 			default_sms: 'some message'
 		};
-		axios.post('/signup/restaurant', user).then(response => {
-			console.log(response);
+		axios.post('/signup/restaurant', user).then(({data}) => {
+			if (!data.user) {
+				return console.log('Login failed');
+			}
+			this.handleLogIn(data.user)
 		}).catch(err => {
 			console.log(err);
 		});
@@ -81,16 +94,16 @@ class YouQueue extends Component {
 	render() {
 		return (
 	    <div>
-	      <Header 
+	      <Header
 	      	logIn={this.handleLogIn}
 	      	logOut={this.handleLogOut}
 	      	loggedIn={this.state.loggedIn}
 	      	userType={this.state.userType}
-	      	userId={this.state.userId}	      	
+	      	userId={this.state.userId}
 	      />
 	      <MainContainer>
 		      <Switch>
-			      <Route exact path="/login" render={props => 
+			      <Route exact path="/login" render={props =>
 			      	<Login
 			      		logIn={this.handleLogIn}
 			      		loggedIn={this.state.loggedIn}

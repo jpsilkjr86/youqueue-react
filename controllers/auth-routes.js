@@ -1,34 +1,55 @@
 // exports as a function which takes in express app and passport parameters
 module.exports = (app, passport) => {
 	// route for signing in. authenticates with passport local strategy 'local-signin'
-	app.post('/login/:usertype', (req, res) => {
+	app.post('/login/:usertype', (req, res, next) => {
 	  passport.authenticate('local-signin', (err, user, info) => {
 	    if (err) {
 	    	console.log(err);
-	    	return res.json(err);
+	    	return next(err);
 	    }
 	    if (!user) {
 	    	return res.json({loginSuccess: false, user: null});
 	    }
-	    console.log('AUTH ROUTE LOGIN SUCCESS');
-	    console.log(user);
-	    res.json({loginSuccess: true, user: user});
-	  })(req, res);
+			req.logIn(user, function(err) {
+				if (err) {
+					return next(err);
+				}
+				console.log('AUTH ROUTE LOGIN SUCCESS');
+		    console.log(user);
+		    res.json({loginSuccess: true, user: user});
+			});
+	  })(req, res, next);
 	});
 
 	// route for signing up new users. authenticates w/ passport local strategy 'local-restaurant-signup'
-	app.post('/signup/restaurant', (req, res) => {
+	app.post('/signup/restaurant', (req, res, next) => {
 	  passport.authenticate('local-restaurant-signup', (err, user, info) => {
 	    if (err) {
 	    	console.log(err);
-	    	return res.json(err);
+	    	return next(err);
 	    }
 	    if (!user) {
 	    	return res.json({signupSuccess: false, user: null});
 	    }
-	    console.log('AUTH ROUTE SIGNUP SUCCESS');
-	    console.log(user);
-	    res.json({signupSuccess: true, user: user});
-	  })(req, res);
+			req.logIn(user, function(err) {
+				if (err) {
+					return next(err);
+				}
+				console.log('AUTH ROUTE SIGNUP SUCCESS');
+		    console.log(user);
+		    res.json({signupSuccess: true, user: user});
+			});
+	  })(req, res, next);
+	});
+
+	// logs user out of site
+	app.post('/logout', (req, res) => {
+		if (req.user) {
+			let email = req.user.email;
+			console.log("LOGGING OUT " + email);
+			req.logout();
+			return res.json({message: 'Log out success!', user: null});
+		}
+		res.json({message: 'Unable to log out: no user was logged in', user: null});
 	});
 };
