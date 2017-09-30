@@ -9,6 +9,9 @@ import Login from './YouQueue/Login.jsx';
 import Footer from './YouQueue/Footer.jsx';
 import MainContainer from './YouQueue/MainContainer.jsx';
 
+// imports supplementary AlertContainer component from react-alert
+import AlertContainer from 'react-alert';
+
 // imports axios for http requests
 import axios from 'axios';
 
@@ -24,7 +27,15 @@ class YouQueue extends Component {
 			loggedIn: false,
 			userType: null,
 			userId: null,
-			user: null
+			user: null,
+			// for react-alert component
+			alertOptions: {
+		    offset: 14,
+		    position: 'top right',
+		    theme: 'light',
+		    time: 5000,
+		    transition: 'scale'
+		  },
 		};
 
 		this.handleLogOut = this.handleLogOut.bind(this);
@@ -44,9 +55,11 @@ class YouQueue extends Component {
 					userId: data.user._id,
 					user: data.user
 				});
+				this.msg.success(data.flash.message);
 			}
 		}).catch(err => {
 			console.log(err);
+			this.msg.error('Error checking authorization.');
 		});
 	}
 
@@ -59,8 +72,10 @@ class YouQueue extends Component {
 				userId: null,
 				user: null
 			});
+			this.msg.success(data.flash.message);
 		}).catch(err => {
 			console.log(err);
+			this.msg.error('Error signing out.');
 		});
 	}
 
@@ -75,8 +90,10 @@ class YouQueue extends Component {
 				userId: data.user._id,
 				user: data.user
 			});
+			this.msg.success(data.flash.message);
 		}).catch(err => {
 			console.log(err);
+			this.msg.error('Error signing in.');
 		});			
 	}
 
@@ -91,8 +108,10 @@ class YouQueue extends Component {
 				userId: data.user._id,
 				user: data.user
 			});
+			this.msg.success(data.flash.message);
 		}).catch(err => {
 			console.log(err);
+			this.msg.error('Error creating new user.');
 		});
 	}
 
@@ -111,8 +130,10 @@ class YouQueue extends Component {
 				userId: data.user._id,
 				user: data.user
 			});
+			this.msg.success(data.flash.message);
 		}).catch(err => {
 			console.log(err);
+			this.msg.error('Error signing in.');
 		});
 	}
 
@@ -136,14 +157,18 @@ class YouQueue extends Component {
 				userId: data.user._id,
 				user: data.user
 			});
+			this.msg.success(data.flash.message);
 		}).catch(err => {
 			console.log(err);
+			this.msg.error('Error creating new user.');
 		});
 	}
 
 	render() {
 		return (
 	    <div>
+				{/* AlertContainer component at top for rendering react-alert */}
+				<AlertContainer ref={a => this.msg = a} {...this.state.alertOptions} />
 	      <Header
 	      	logIn={this.handleLogIn}
 	      	logOut={this.handleLogOut}

@@ -8,7 +8,7 @@ module.exports = (app, passport) => {
 	    	return next(err);
 	    }
 	    if (!user) {
-	    	return res.json({loginSuccess: false, user: null});
+	    	return res.json({loginSuccess: false, user: null, flash: info});
 	    }
 			req.logIn(user, function(err) {
 				if (err) {
@@ -16,7 +16,7 @@ module.exports = (app, passport) => {
 				}
 				console.log('AUTH ROUTE LOGIN SUCCESS');
 		    console.log(user);
-		    res.json({loginSuccess: true, user: user});
+		    res.json({loginSuccess: true, user: user, flash: info});
 			});
 	  })(req, res, next);
 	});
@@ -29,7 +29,7 @@ module.exports = (app, passport) => {
 	    	return next(err);
 	    }
 	    if (!user) {
-	    	return res.json({signupSuccess: false, user: null});
+	    	return res.json({signupSuccess: false, user: null, flash: info});
 	    }
 			req.logIn(user, function(err) {
 				if (err) {
@@ -37,7 +37,7 @@ module.exports = (app, passport) => {
 				}
 				console.log('AUTH ROUTE SIGNUP SUCCESS');
 		    console.log(user);
-		    res.json({signupSuccess: true, user: user});
+		    res.json({signupSuccess: true, user: user, flash: info});
 			});
 	  })(req, res, next);
 	});
@@ -48,9 +48,9 @@ module.exports = (app, passport) => {
 			let email = req.user.email;
 			console.log("LOGGING OUT " + email);
 			req.logout();
-			return res.json({message: 'Log out success!', user: null});
+			return res.json({logoutSuccess: true, user: null, flash: {message: 'Log out successful!'}});
 		}
-		res.json({message: 'Unable to log out: no user was logged in', user: null});
+		res.json({logoutSuccess: true, user: null, flash: {message: 'Unable to log out: no user was logged in'}});
 	});
 
 	// get route for checking to see if there is an existing login session
@@ -61,6 +61,6 @@ module.exports = (app, passport) => {
 			return res.json({isLoggedIn: false, user: null});
 		}
 		console.log('USER LOGGED IN AS ' + req.user.email + '. SENDING TRUE AND USER OBJECT.');
-		res.json({isLoggedIn: true, user: req.user});
+		res.json({isLoggedIn: true, user: req.user, flash: {message: `Welcome back, ${req.user.restaurant_name}!`}});
 	});
 };

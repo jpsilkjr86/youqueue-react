@@ -64,22 +64,22 @@ passport.use('local-signin', new LocalStrategy({
       // early returns if no match
       if (!response.emailMatch) {
         console.log('USER NOT FOUND:', email);
-        return done(null, false);
+        return done(null, false, {message: 'User not found.'});
       } // early returns if password doesn't match
       if (!response.pwMatch) {
         console.log("PASSWORD DOESN'T MATCH", email);
-        return done(null, false);
+        return done(null, false, {message: "Password doesn't match."});
       }
       if (!response.user) {
         console.log('UNABLE TO LOGIN USER');
-        return done(null, false);
+        return done(null, false, {message: "Unable to log in."});
       }
       console.log('PASSWORD MATCHED! LOGGED IN AS USER:', email);
-      done(null, response.user);
+      done(null, response.user, {message: "Log in successful!"});
     }).catch(err => {
     console.log(err);
       console.log('SERVER ERROR - UNABLE TO SIGN IN USER');
-      done(err);
+      done(err, null, {message: "Error: Failed to log in."});
     });
   } //end of passport callback
 )); // end of local-signin
@@ -93,20 +93,20 @@ passport.use('local-restaurant-signup', new LocalStrategy({
       // early returns if user already exists
       if (response.accountExists) {
         console.log("USER ALREADY EXISTS:" + email);
-        return done(null, false);        
+        return done(null, false, {message: "Email already in use."});        
       }
       if (!response.user) {
         console.log('UNABLE TO CREATE USER');
-        return done(null, false);
+        return done(null, false, {message: "Unable to create user."});
       }
       console.log('ACCOUNT SUCCESSFULLY CREATED! SIGNED IN AS:', email);
       console.log('New User Data:');
       console.log(response.user);
-      done(null, response.user);
+      done(null, response.user, {message: "Account successfully created!"});
     }).catch(err => {
       console.log(err);
       console.log('FAILED TO CREATE USER:', email);
-      done(err);
+      done(err, null, {message: "Error: Failed to create user."});
     });
   } // end of passport callback
 )); // end of passport.use
