@@ -123,8 +123,22 @@ class RestaurantMain extends Component {
 	handleSendSMS(sms_message){
 		const partyId = this.state.partyToSendSMS._id;
 		axios.post(`/party/${partyId}/send_sms`, {sms_message}).then(response => {
-			this.msg.success("SMS Successfully Delivered");
 			console.log(response);
+			// sets alerted_sms to true
+			return axios.post(`/party/${partyId}/alerted_sms`);
+		}).then(({data}) => {
+			// grabs parties array through destructuring assignment
+			const { parties } = this.state;
+			// saves updatedParty equal to the updated document
+			const updatedParty = data;
+			// saves updated as new array equal to parties array but
+			// with the updated document replacing its original value
+			const updatedParties = parties.map((originalParty, i) => 
+				originalParty._id === partyId ? updatedParty : originalParty
+			);
+			// call setState to update parties array
+			this.setState({parties: updatedParties});
+			this.msg.success("SMS Successfully Delivered");
 		}).catch(err => {
 			this.msg.error("SMS Failed To Deliver");
 			console.log(err);

@@ -66,7 +66,7 @@ class SMSForm extends Component {
 
     this.props.send_sms(sms_message);
 
-
+    $('#sms-modal').modal('close');
 
 	}
 

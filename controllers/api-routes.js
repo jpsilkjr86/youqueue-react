@@ -65,8 +65,8 @@ module.exports = app => {
 		});
 	});
 
-	// route for alerting sms
-	app.post('/party/:id/alert_sms', (req, res) => {
+	// route for setting alerted_sms to true
+	app.post('/party/:id/alerted_sms', (req, res) => {
 		dbHelper.alertedSMS(req.params.id).then(newDoc => {
 			res.json(newDoc);
 		}).catch(err => {

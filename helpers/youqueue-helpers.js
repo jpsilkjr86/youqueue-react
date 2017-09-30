@@ -105,10 +105,10 @@ const yqh = {
 		youQueueSMSPrototype = {
 			send(message, phone_number) {
 				return new Promise( (resolve, reject) => {
-					client.Messages.send({text: message, phones: phone_number}, (err, res_sms) => {
+					client.Messages.send({text: message, phones: 1 + phone_number}, (err, res_sms) => {
 						if (err) {
 							return reject(err);
-						}	
+						}
 						resolve(res_sms);
 					});
 				});
