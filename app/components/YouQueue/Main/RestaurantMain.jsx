@@ -207,6 +207,12 @@ class RestaurantMain extends Component {
 		// https://github.com/react-materialize/react-materialize/issues/246
 		$('#sms-modal').modal('open');
 	}
+  
+  handleSendSMS() {
+  	
+  	axios.get()
+
+  }
 
 	handleAddParty(data){
 		console.log(data); 

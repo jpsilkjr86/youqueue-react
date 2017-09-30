@@ -63,7 +63,9 @@ class SMSForm extends Component {
     const { sms_message } = this.state;
     
     // call parent function from RestaurantMain.jsx 
+
     this.props.send_sms(sms_message);
+
 
 
 	}
