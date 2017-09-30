@@ -52,6 +52,10 @@ main {
     font-size: 10px;
 }
 
+.required-fields {
+	margin-left: 15px
+}
+
 .edit-btn, .cancel-btn, .arrived-btn {
 	margin: 2px 0;
 }
