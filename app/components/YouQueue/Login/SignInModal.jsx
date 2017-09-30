@@ -19,7 +19,12 @@ class SignInModal extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-  } 
+  }
+
+  // ensures modal always closes before the component unmounts
+  componentWillUnmount() {
+    $('#signin-modal').modal('close')
+  }
 
   handleChange(event) {
     
@@ -32,20 +37,18 @@ class SignInModal extends Component {
   }
 
   handleSubmit(event) {
-    // console.log(this.state);
     // prevents default form behavior
     event.preventDefault();
 
     const user = this.state;
-    console.log(user);
     // clears state data, triggering re-rendering of component to empty form
     this.setState({
       email: "",
       password: ""
     });
     
-    // call parent function from RestaurantMain.jsx 
-    // this.props.handleAddParty(party);
+    // call parent function from YouQueue.jsx 
+    this.props.handleLogIn(user, 'restaurant');
 
 
   }

@@ -27,8 +27,9 @@ class YouQueue extends Component {
 			user: null
 		};
 
-		this.handleLogIn = this.handleLogIn.bind(this);
 		this.handleLogOut = this.handleLogOut.bind(this);
+		this.handleLogIn = this.handleLogIn.bind(this);
+		this.handleSignUp = this.handleSignUp.bind(this);
 		this.loginGuest = this.loginGuest.bind(this);
 		this.signupGuest = this.signupGuest.bind(this);
 	}
@@ -49,15 +50,6 @@ class YouQueue extends Component {
 		});
 	}
 
-	handleLogIn(user, usertype) {
-		this.setState({
-			loggedIn: true,
-			userType: usertype,
-			userId: user._id,
-			user: user
-		});
-	}
-
 	handleLogOut() {
 		axios.post('/logout').then(({data}) => {
 			console.log(data);
@@ -66,6 +58,38 @@ class YouQueue extends Component {
 				userType: null,
 				userId: null,
 				user: null
+			});
+		}).catch(err => {
+			console.log(err);
+		});
+	}
+
+	handleLogIn(user, usertype) {
+		axios.post(`/login/${usertype}`, user).then(({data}) => {
+			if (!data.user) {
+				return console.log('Login failed');
+			}
+			this.setState({
+				loggedIn: true,
+				userType: usertype,
+				userId: data.user._id,
+				user: data.user
+			});
+		}).catch(err => {
+			console.log(err);
+		});			
+	}
+
+	handleSignUp(user, usertype) {
+		axios.post('/signup/restaurant', user).then(({data}) => {
+			if (!data.user) {
+				return console.log('Signup failed');
+			}
+			this.setState({
+				loggedIn: true,
+				userType: 'restaurant',
+				userId: data.user._id,
+				user: data.user
 			});
 		}).catch(err => {
 			console.log(err);
@@ -81,7 +105,12 @@ class YouQueue extends Component {
 			if (!data.user) {
 				return console.log('Login failed');
 			}
-			this.handleLogIn(data.user, 'restaurant');
+			this.setState({
+				loggedIn: true,
+				userType: 'restaurant',
+				userId: data.user._id,
+				user: data.user
+			});
 		}).catch(err => {
 			console.log(err);
 		});
@@ -99,9 +128,14 @@ class YouQueue extends Component {
 		};
 		axios.post('/signup/restaurant', user).then(({data}) => {
 			if (!data.user) {
-				return console.log('Login failed');
+				return console.log('Signup failed');
 			}
-			this.handleLogIn(data.user)
+			this.setState({
+				loggedIn: true,
+				userType: 'restaurant',
+				userId: data.user._id,
+				user: data.user
+			});
 		}).catch(err => {
 			console.log(err);
 		});
@@ -121,7 +155,8 @@ class YouQueue extends Component {
 		      <Switch>
 			      <Route exact path="/login" render={props =>
 			      	<Login
-			      		logIn={this.handleLogIn}
+			      		handleLogIn={this.handleLogIn}
+			      		handleSignUp={this.handleSignUp}
 			      		loggedIn={this.state.loggedIn}
 			      		loginGuest={this.loginGuest}
 			      		signupGuest={this.signupGuest}

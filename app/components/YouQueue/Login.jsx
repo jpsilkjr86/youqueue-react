@@ -12,8 +12,8 @@ const Login = props => (
 		<Redirect exact to="/"/>
 	) : (
     <LoginCard>
-      <SignInModal id="signin-modal"/>
-      <SignUpModal id="signup-modal"/>
+      <SignInModal id="signin-modal" handleLogIn={props.handleLogIn}/>
+      <SignUpModal id="signup-modal" handleSignUp={props.handleSignUp}/>
       <a
         className="btn btn-flat modal-trigger waves-effect waves-light"
         onClick={() => $('#signin-modal').modal('open')}

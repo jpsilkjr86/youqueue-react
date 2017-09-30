@@ -23,7 +23,11 @@ class SignUpModal extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
-	} 
+	}
+
+	componentWillUnmount() {
+		$('#signup-modal').modal('close')
+	}
 
 	handleChange(event) {
 		
@@ -36,12 +40,10 @@ class SignUpModal extends Component {
 	}
 
 	handleSubmit(event) {
-		// console.log(this.state);
 		// prevents default form behavior
     event.preventDefault();
 
     const newUser = this.state;
-    console.log(newUser);
     // clears state data, triggering re-rendering of component to empty form
     this.setState({
 			first_name: "",
@@ -53,8 +55,7 @@ class SignUpModal extends Component {
     });
     
     // call parent function from RestaurantMain.jsx 
-    // this.props.handleAddParty(party);
-
+    this.props.handleSignUp(newUser, 'restaurant');
 
 	}
 
