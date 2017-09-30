@@ -72,7 +72,7 @@ class SMSForm extends Component {
    //  });
     
     // call parent function from RestaurantMain.jsx 
-    // this.props.handleAddParty(party);
+    this.props.handleSendSMS(party);
 
 
 	}

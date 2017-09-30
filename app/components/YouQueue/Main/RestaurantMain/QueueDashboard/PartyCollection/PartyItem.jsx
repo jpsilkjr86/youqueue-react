@@ -1,6 +1,8 @@
 // imports react component classNames
 import React from 'react';
 
+const moment = require('moment');
+
 // declares PartyItem as pure functional component (stateless)
 const PartyItem = props => (
 
@@ -14,9 +16,11 @@ const PartyItem = props => (
 		    />
 		  </div>
 		  <div className="col s6 m6">
-		    <p>Party: <b>{props.party.party_name}</b></p>
-		    <p>Party Size: <b>{props.party.party_size}</b></p>
-		    <p>Reserved Under: <b>{props.party.reserved_under}</b></p>
+		    <p><u>Party of {props.party.party_size}:</u><br/>
+		    	<b>{props.party.party_name}</b>
+		    </p>
+		    {/* <p>Name: <b>{props.party.reserved_under}</b></p> */}
+		    <p><b>{moment(props.party.entered_queue_at).format('LTS')}</b></p>
 		  </div>
 		  <div className="col s3 m4">
 		    <div className="row">
