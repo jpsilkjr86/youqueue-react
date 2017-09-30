@@ -1,36 +1,96 @@
 // imports react component classes
-import React from 'react';
+import React, { Component } from 'react';
 
 // imports Modal from materialize
 import { Modal } from 'react-materialize';
 
-// pure functional component, only job is to decide whether to render a form or not
-const SignInModal = props => (
+// declares SignInModal component as stateful class component, which will be this file's export.
+class SignInModal extends Component {
 
-	<Modal 
-		id={props.id}
-		header="Sign In"
-		actions={null}>
-		<form id="sign-in">
-      <div className="row">
-        <div className="input-field col s12">
-          <i className="material-icons prefix">email</i>
-          <input id="email-existing" type="email" className="validate" required="required" name="email"/>
-          <label htmlFor="email">Email</label>
-        </div>
-      </div>
-      <div className="row">
-        <div className="input-field col s12">
-          <i className="material-icons prefix">security</i>
-          <input id="password-existing" type="password" className="validate" required="required" name="password"/>
-          <label htmlFor="password">Password</label>
-        </div>
-      </div>
-      <button className="btn waves-effect waves-light right" type="submit">Submit</button>
-	  </form>
-	</Modal>
+  constructor(props) {
+    super(props);
 
-);
+    // set initial state 
+    this.state = {
+      email: "",
+      password: ""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+  } 
+
+  handleChange(event) {
+    
+    const { value, name } = event.target;
+    // sets state of whatever the input name is to the value of event object
+    this.setState({
+      [name]: value
+    });
+
+  }
+
+  handleSubmit(event) {
+    // console.log(this.state);
+    // prevents default form behavior
+    event.preventDefault();
+
+    const user = this.state;
+    console.log(user);
+    // clears state data, triggering re-rendering of component to empty form
+    this.setState({
+      email: "",
+      password: ""
+    });
+    
+    // call parent function from RestaurantMain.jsx 
+    // this.props.handleAddParty(party);
+
+
+  }
+
+  render() {
+    return (
+    	<Modal 
+    		id={this.props.id}
+    		header="Sign In"
+    		actions={null}>
+    		<form id="sign-in" onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="input-field col s12">
+              <i className="material-icons prefix">email</i>
+              <input
+                type="email"
+                className="validate"
+                required="required"
+                name="email"
+                onChange={this.handleChange}
+                value={this.state.email}
+              />
+              <label htmlFor="email">Email</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <i className="material-icons prefix">security</i>
+              <input
+                type="password"
+                className="validate"
+                required="required"
+                name="password"
+                onChange={this.handleChange}
+                value={this.state.password}
+              />
+              <label htmlFor="password">Password</label>
+            </div>
+          </div>
+          <button className="btn waves-effect waves-light right" type="submit">Submit</button>
+    	  </form>
+    	</Modal>
+    );
+  }
+}
 
 // exports SignInModal component for other files to use
 export default SignInModal;
