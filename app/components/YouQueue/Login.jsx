@@ -2,36 +2,37 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+import LoginCard from './Login/LoginCard.jsx';
+import SignInModal from './Login/SignInModal.jsx';
+import SignUpModal from './Login/SignUpModal.jsx';
+
 // declares Login pure functional component, which will be this file's export
 const Login = props => (
 	props.loggedIn ? (
 		<Redirect exact to="/"/>
 	) : (
-    <div className="row">
-	    <div className="col s10 offset-s1 m8 offset-m2">
-        <div className="card z-depth-4 orange lighten-4" id="signin-card">
-          <div className="card-content black-text center-align">
-            <h2 className="card-title">Welcome to<br/>You-Queue</h2>
-          </div>
-          <div className="card-action center-align">
-            <a
-              className="btn btn-flat modal-trigger waves-effect waves-light"
-              data-target="signin-modal"
-              onClick={props.loginGuest}
-            >
-              SIGN IN
-            </a>
-            <a
-              className="btn btn-flat modal-trigger waves-effect waves-light"
-              data-target="newuser-modal"
-              onClick={props.signupGuest}
-            >
-              NEW USER
-            </a>
-          </div>
-        </div>
-	    </div>
-		</div>
+    <LoginCard>
+      <SignInModal id="signin-modal"/>
+      <SignUpModal id="signup-modal"/>
+      <a
+        className="btn btn-flat modal-trigger waves-effect waves-light"
+        onClick={() => $('#signin-modal').modal('open')}
+      >
+        SIGN IN
+      </a>
+      <a
+        className="btn btn-flat modal-trigger waves-effect waves-light"
+        onClick={() => $('#signup-modal').modal('open')}
+      >
+        SIGN UP
+      </a>
+      <a
+        className="btn btn-flat modal-trigger waves-effect waves-light"
+        onClick={props.loginGuest}
+      >
+        GUEST
+      </a>
+    </LoginCard>
 	)
 );
 
