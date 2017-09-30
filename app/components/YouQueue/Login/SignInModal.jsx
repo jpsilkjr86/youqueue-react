@@ -10,7 +10,7 @@ const SignInModal = props => (
 	<Modal 
 		id={props.id}
 		header="Sign In"
-		actions={<button className="btn btn-flat waves-effect waves-light" type="submit">Submit</button>}>
+		actions={null}>
 		<form id="sign-in">
       <div className="row">
         <div className="input-field col s12">
@@ -26,6 +26,7 @@ const SignInModal = props => (
           <label htmlFor="password">Password</label>
         </div>
       </div>
+      <button className="btn waves-effect waves-light right" type="submit">Submit</button>
 	  </form>
 	</Modal>
 
