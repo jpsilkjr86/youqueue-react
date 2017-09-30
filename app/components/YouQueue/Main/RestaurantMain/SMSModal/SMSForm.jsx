@@ -27,7 +27,6 @@ class SMSForm extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
 		// updates like how the constructor sets state from received props
 		const sms_message = 'You-Queue Alert for ' + nextProps.party.party_name + ': ' 
 		          	+ 'Your table is ready! Please come at your earliest convenience. '
@@ -56,20 +55,10 @@ class SMSForm extends Component {
 	}
 
 	handleSubmitForm(event) {
-		// console.log(this.state);
 		// prevents default form behavior
     event.preventDefault();
 
     const { sms_message } = this.state;
-    // clears state data, triggering re-rendering of component to empty form
-   //  this.setState({
-   //    party_name: "",
-			// party_size: "",
-			// phone_number: "",
-			// email: "",
-			// first_name: "",
-			// last_name: ""
-   //  });
     
     // call parent function from RestaurantMain.jsx 
     this.props.send_sms(sms_message);

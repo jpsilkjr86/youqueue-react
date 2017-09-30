@@ -56,6 +56,10 @@ main {
 	margin-left: 15px
 }
 
+.materialize-textarea {
+	min-height: 80px !important;
+}
+
 .edit-btn, .cancel-btn, .arrived-btn {
 	margin: 2px 0;
 }
