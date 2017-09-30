@@ -47,6 +47,8 @@ class SMSForm extends Component {
 
     const newCharRemainging = 140 - newSMSMsg.length;
 
+    this.button.disabled = (newCharRemainging < 0);
+
     // sets state of whatever the input name is to the value of event object
     this.setState({
     	sms_message: newSMSMsg,
@@ -60,7 +62,7 @@ class SMSForm extends Component {
 		// prevents default form behavior
     event.preventDefault();
 
-    // const party = this.state;
+    const { sms_message } = this.state;
     // clears state data, triggering re-rendering of component to empty form
    //  this.setState({
    //    party_name: "",
@@ -72,7 +74,9 @@ class SMSForm extends Component {
    //  });
     
     // call parent function from RestaurantMain.jsx 
-    this.props.handleSendSMS(party);
+
+    this.props.send_sms(sms_message);
+
 
 
 	}
@@ -99,7 +103,10 @@ class SMSForm extends Component {
 				        </div>
 				        <div className="col s12 center">
 				        	<p className="left"><em>Characters remaining: {charactersRemaining}</em></p>
-				          <button className="btn waves-effect waves-light right" type="submit">
+				          <button
+				          	className="btn waves-effect waves-light right"
+				          	type="submit"
+				          	ref={(node) => this.button = node}>
 				          	Send Message
 				          </button>
 			        	</div>

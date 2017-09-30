@@ -40,6 +40,7 @@ class RestaurantMain extends Component {
 		this.handleUndoDeactivate = this.handleUndoDeactivate.bind(this);
 		this.showSMSModal = this.showSMSModal.bind(this);
 		this.handleAddParty = this.handleAddParty.bind(this);
+		this.handleSendSMS = this.handleSendSMS.bind(this);
 	}
 
 	// called once the component mounts for the first time
@@ -117,6 +118,17 @@ class RestaurantMain extends Component {
 		// 	// alert user that there was an error processing the request
 		// 	this.msg.error('Error: Unable to deliver SMS');
 		// });
+	}
+
+	handleSendSMS(sms_message){
+		const partyId = this.state.partyToSendSMS._id;
+		axios.post(`/party/${partyId}/send_sms`, {sms_message}).then(response => {
+			this.msg.success("SMS Successfully Delivered");
+			console.log(response);
+		}).catch(err => {
+			this.msg.error("SMS Failed To Deliver");
+			console.log(err);
+		});
 	}
 
 	// handles deactivate party functionality
@@ -235,7 +247,7 @@ class RestaurantMain extends Component {
 				{/* AlertContainer component at top for rendering react-alert */}
 				<AlertContainer ref={a => this.msg = a} {...this.state.alertOptions} />
 				{/* SMSModal here ready to be dipslayed as needed */}
-				<SMSModal id="sms-modal" party={this.state.partyToSendSMS}/>
+				<SMSModal id="sms-modal" party={this.state.partyToSendSMS} send_sms={this.handleSendSMS}/>
 				{/* Switch route for principle components in RestaurantMain */}
 				<Switch>
 					<Route exact path="/restaurant/:id/dashboard" render={props => 
