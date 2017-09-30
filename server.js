@@ -3,7 +3,12 @@ const express = require('express'),
 	bodyParser = require('body-parser'),
   logger = require('morgan'),
   mongoose = require('mongoose'),
-  fs = require('fs');
+  fs = require('fs'),
+  cookieParser = require('cookie-parser'),
+  session = require('express-session'),
+  passport = require('passport'),
+  LocalStrategy = require('passport-local'),
+  yqh = require('./helpers/youqueue-helpers.js');
 
 // sets up express app
 const app = express();
@@ -31,6 +36,81 @@ else if (fs.existsSync('./config/config.json')){
 // saves resulting connection as constable
 const db = mongoose.connection;
 
+// ================ Passport Configuration (User Authentication) ================
+// creates youqueue helper object for easy db management
+const dbHelper = yqh.createDatabaseHelper();
+
+// Passport session setup
+passport.serializeUser((user, done) => {
+  console.log("serializing user " + user._id);
+  done(null, user._id);
+});
+passport.deserializeUser((_id, done) => {
+  console.log("deserializing user " + _id);
+  dbHelper.getUser(_id).then(user => {
+    done(null, user);
+  }).catch(err => {
+    done(err);
+  });
+});
+
+// sets up sign-in LocalStrategy within Passport
+passport.use('local-signin', new LocalStrategy({
+    passReqToCallback : true, // allows us to pass back the request to the callback
+    usernameField: 'email' // changes default 'username' to be 'email' instead
+  }, (req, email, password, done) => {
+    // calls youqueue loginAuth helper method
+    yqh.loginAuth(email, password, req.params.usertype).then(response => {
+      // early returns if no match
+      if (!response.emailMatch) {
+        console.log('USER NOT FOUND:', email);
+        return done(null, false);
+      } // early returns if password doesn't match
+      if (!response.pwMatch) {
+        console.log("PASSWORD DOESN'T MATCH", email);
+        return done(null, false);
+      }
+      if (!response.user) {
+        console.log('UNABLE TO LOGIN USER');
+        return done(null, false);
+      }
+      console.log('PASSWORD MATCHED! LOGGED IN AS USER:', email);
+      done(null, response.user);
+    }).catch(err => {
+    console.log(err);
+      console.log('SERVER ERROR - UNABLE TO SIGN IN USER');
+      done(err);
+    });
+  } //end of passport callback
+)); // end of local-signin
+
+// sets up restaurant sign-up LocalStrategy within Passport
+passport.use('local-restaurant-signup', new LocalStrategy({
+    passReqToCallback : true, // allows us to pass back the request to the callback
+    usernameField: 'email' // changes default 'username' to be 'email' instead
+  }, (req, email, password, done) => {
+    yqh.signupRestaurantAuth(email, password, req.body).then(response => {
+      // early returns if user already exists
+      if (response.accountExists) {
+        console.log("USER ALREADY EXISTS:" + email);
+        return done(null, false);        
+      }
+      if (!response.user) {
+        console.log('UNABLE TO CREATE USER');
+        return done(null, false);
+      }
+      console.log('ACCOUNT SUCCESSFULLY CREATED! SIGNED IN AS:', email);
+      console.log('New User Data:');
+      console.log(response.user);
+      done(null, response.user);
+    }).catch(err => {
+      console.log(err);
+      console.log('FAILED TO CREATE USER:', email);
+      done(err);
+    });
+  } // end of passport callback
+)); // end of passport.use
+
 // ================ Express Configuration ================
 // Configures Express and body parser
 app.use(logger('dev'));
@@ -42,8 +122,13 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 // serves public directory as static, enabling html pages to link with their assets
 app.use(express.static('public'));
 
-// ============ Webpack Middleware Configurations (Development Only) ============
+// Passport, Session and cookieParser configuration with express instance
+app.use(cookieParser());
+app.use(session({secret: 'targetgumption', saveUninitialized: true, resave: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// ============ Webpack Middleware Configurations (Development Only) ============
 // first checks to make sure NODE_ENV is in development mode (ie not production mode)
 if (process.env.NODE_ENV !== 'production') {
   console.log('NODE_ENV is in development mode.'
@@ -72,7 +157,6 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-
 // ================ Connection Establishment ================
 // show any mongoose connection errors
 db.on('error', function(error) {
@@ -86,6 +170,7 @@ db.once('open', function() {
 	app.listen(port, () => {
 		console.log('App listening on port ' + port);
 		// sets up routes
+    require('./controllers/auth-routes.js')(app, passport);
 		require('./controllers/api-routes.js')(app);
 	});
 });

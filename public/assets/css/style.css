@@ -27,6 +27,11 @@ main {
 	margin: 15px 0;
 }
 
+#modal-close-icon {
+	top: 10px;
+	right: 10px;
+}
+
 #partyform-content {
 	padding: 30px 40px 0 40px;
 }
@@ -45,6 +50,14 @@ main {
     line-height: 24px;
     padding: 0 0.5rem;
     font-size: 10px;
+}
+
+.required-fields {
+	margin-left: 15px
+}
+
+.materialize-textarea {
+	min-height: 80px !important;
 }
 
 .edit-btn, .cancel-btn, .arrived-btn {

@@ -5,13 +5,27 @@ const dbHelper = yqh.createDatabaseHelper();
 
 // exports as function which takes in app as parameter
 module.exports = app => {
+	// // ensures user id and restaurant id matches for all restaurant api requests
+	// app.get('/restaurant/:any?/:any?/:any?/:any?', (req, res, next) => {
+	// 	if (!req.user) {
+	// 		console.log('ACCESS DENIED - NO USER IS LOGGED IN')
+	// 		return res.send('Access denied: No user is logged in.');
+	// 	}
+	// 	next();
+	// });
+
+	// // ensures user id and restaurant id matches for all restaurant api requests
+	// app.get('/restaurant/:any?/:any?/:any?/:any?', (req, res, next) => {
+	// 	if (req.user._id !== req.params.id) {
+	// 		console.log('ACCESS DENIED - RESTAURANT ID DOES NOT MATCH USER ID')
+	// 		return res.send('Permission denied: User id does not match restaurant id.');
+	// 	}
+	// 	next();
+	// });
+
 	// get route for retrieving all active parties for a restaurant by its id
 	app.get('/restaurant/:id/parties/all', (req, res) => {
 		console.log('FINDING ALL PARTIES FOR RESTAURANT ID ' + req.params.id);
-		// if (req.user._id !== req.params.id) {
-			// console.log('ACCESS DENIED - RESTAURANT ID DOES NOT MATCH USER ID')
-			// return res.send('Permission denied.');
-		// }
 		dbHelper.getAllParties(req.params.id).then(results => {
 			console.log(results.length + ' PARTIES FOUND. SENDING BACK TO USER...');
 			res.json(results);
@@ -123,3 +137,9 @@ module.exports = app => {
 		});
 	});
 };
+
+
+		// console.log(req.user);
+		// if (!req.user) {
+		// 	return res.send('Request denied: no user logged in.');
+		// }

@@ -16,8 +16,16 @@ const Header = ({loggedIn, logIn, logOut, userId, userType}) => (
 					</a>
 					<div className="brand-logo center">Welcome!</div>
 					<ul id="nav-mobile" className="right hide-on-small-only">
-						<li><Link to={`/${userType}/${userId}/parties/add`} className="btn-floating"><i className="material-icons red accent-1">add</i></Link></li>
-						<li><Link to={`/${userType}/${userId}/dashboard`} className="btn-floating"><i className="material-icons red accent-1">dashboard</i></Link></li>
+						<li>
+							<Link to={`/${userType}/${userId}/parties/add`} className="btn-floating">
+								<i className="material-icons red accent-1">add</i>
+							</Link>
+						</li>
+						<li>
+							<Link to={`/${userType}/${userId}/dashboard`} className="btn-floating">
+								<i className="material-icons red accent-1">dashboard</i>
+							</Link>
+						</li>
 						<li><a onClick={logOut}>Log Out</a></li>
 					</ul>
 					<ul className="side-nav hide-on-med-and-up" id="slide-out">
@@ -29,6 +37,7 @@ const Header = ({loggedIn, logIn, logOut, userId, userType}) => (
 				</div>
 			</nav>
 		</header>
+		
 	// if not logged in, render this:
 	) : (
 
@@ -41,11 +50,11 @@ const Header = ({loggedIn, logIn, logOut, userId, userType}) => (
 					</a>
 					<div className="brand-logo center">WELCOME</div>
 					<ul id="nav-mobile" className="right hide-on-small-only">
-						<li><a onClick={logIn}>Sign In</a></li>
+						<li><Link to="/login">Sign In</Link></li>
 					</ul>
 					<ul className="side-nav hide-on-med-and-up" id="slide-out">
 						<li><img src="/assets/images/brand_small.png" className="slide-out-brand"/></li>
-						<li><a onClick={logIn}>Sign In</a></li>
+						<li><Link to="/login">Sign In</Link></li>
 					</ul>
 				</div>
 			</nav>
