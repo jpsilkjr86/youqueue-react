@@ -82,6 +82,7 @@ class YouQueue extends Component {
 	handleLogIn(user, usertype) {
 		axios.post(`/login/${usertype}`, user).then(({data}) => {
 			if (!data.user) {
+				this.msg.error(data.flash.message);
 				return console.log('Login failed');
 			}
 			this.setState({
@@ -100,6 +101,7 @@ class YouQueue extends Component {
 	handleSignUp(user, usertype) {
 		axios.post('/signup/restaurant', user).then(({data}) => {
 			if (!data.user) {
+				this.msg.error(data.flash.message);
 				return console.log('Signup failed');
 			}
 			this.setState({
@@ -122,6 +124,7 @@ class YouQueue extends Component {
 		};
 		axios.post('/login/restaurant', user).then(({data}) => {
 			if (!data.user) {
+				this.msg.error(data.flash.message);
 				return console.log('Login failed');
 			}
 			this.setState({
@@ -149,6 +152,7 @@ class YouQueue extends Component {
 		};
 		axios.post('/signup/restaurant', user).then(({data}) => {
 			if (!data.user) {
+				this.msg.error(data.flash.message);
 				return console.log('Signup failed');
 			}
 			this.setState({
