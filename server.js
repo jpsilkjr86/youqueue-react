@@ -75,7 +75,7 @@ passport.use('local-signin', new LocalStrategy({
         return done(null, false, {message: "Unable to log in."});
       }
       console.log('PASSWORD MATCHED! LOGGED IN AS USER:', email);
-      done(null, response.user, {message: "Log in successful!"});
+      done(null, response.user, {message: "Welcome! Logged in as " + email});
     }).catch(err => {
     console.log(err);
       console.log('SERVER ERROR - UNABLE TO SIGN IN USER');
@@ -102,7 +102,7 @@ passport.use('local-restaurant-signup', new LocalStrategy({
       console.log('ACCOUNT SUCCESSFULLY CREATED! SIGNED IN AS:', email);
       console.log('New User Data:');
       console.log(response.user);
-      done(null, response.user, {message: "Account successfully created!"});
+      done(null, response.user, {message: "Account successfully created for " + email + ". Welcome!"});
     }).catch(err => {
       console.log(err);
       console.log('FAILED TO CREATE USER:', email);

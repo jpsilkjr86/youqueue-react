@@ -58,14 +58,12 @@ class YouQueue extends Component {
 				this.msg.success(data.flash.message);
 			}
 		}).catch(err => {
-			console.log(err);
 			this.msg.error('Error checking authorization.');
 		});
 	}
 
 	handleLogOut() {
 		axios.post('/logout').then(({data}) => {
-			console.log(data);
 			this.setState({
 				loggedIn: false,
 				userType: null,
@@ -74,7 +72,6 @@ class YouQueue extends Component {
 			});
 			this.msg.success(data.flash.message);
 		}).catch(err => {
-			console.log(err);
 			this.msg.error('Error signing out.');
 		});
 	}
@@ -82,8 +79,7 @@ class YouQueue extends Component {
 	handleLogIn(user, usertype) {
 		axios.post(`/login/${usertype}`, user).then(({data}) => {
 			if (!data.user) {
-				this.msg.error(data.flash.message);
-				return console.log('Login failed');
+				return this.msg.error(data.flash.message);
 			}
 			this.setState({
 				loggedIn: true,
@@ -93,7 +89,6 @@ class YouQueue extends Component {
 			});
 			this.msg.success(data.flash.message);
 		}).catch(err => {
-			console.log(err);
 			this.msg.error('Error signing in.');
 		});			
 	}
@@ -101,8 +96,7 @@ class YouQueue extends Component {
 	handleSignUp(user, usertype) {
 		axios.post('/signup/restaurant', user).then(({data}) => {
 			if (!data.user) {
-				this.msg.error(data.flash.message);
-				return console.log('Signup failed');
+				return this.msg.error(data.flash.message);
 			}
 			this.setState({
 				loggedIn: true,
@@ -112,7 +106,6 @@ class YouQueue extends Component {
 			});
 			this.msg.success(data.flash.message);
 		}).catch(err => {
-			console.log(err);
 			this.msg.error('Error creating new user.');
 		});
 	}
@@ -124,8 +117,7 @@ class YouQueue extends Component {
 		};
 		axios.post('/login/restaurant', user).then(({data}) => {
 			if (!data.user) {
-				this.msg.error(data.flash.message);
-				return console.log('Login failed');
+				return this.msg.error(data.flash.message);
 			}
 			this.setState({
 				loggedIn: true,
@@ -135,7 +127,6 @@ class YouQueue extends Component {
 			});
 			this.msg.success(data.flash.message);
 		}).catch(err => {
-			console.log(err);
 			this.msg.error('Error signing in.');
 		});
 	}
@@ -152,8 +143,7 @@ class YouQueue extends Component {
 		};
 		axios.post('/signup/restaurant', user).then(({data}) => {
 			if (!data.user) {
-				this.msg.error(data.flash.message);
-				return console.log('Signup failed');
+				return this.msg.error(data.flash.message);
 			}
 			this.setState({
 				loggedIn: true,
@@ -163,7 +153,6 @@ class YouQueue extends Component {
 			});
 			this.msg.success(data.flash.message);
 		}).catch(err => {
-			console.log(err);
 			this.msg.error('Error creating new user.');
 		});
 	}

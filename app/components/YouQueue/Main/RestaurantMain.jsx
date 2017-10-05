@@ -50,10 +50,9 @@ class RestaurantMain extends Component {
 		// performs axios request to get parties by restaurant id
 		axios.get(`/restaurant/${id}/parties/all`).then( ({data}) => {
 			// updates parties array with response data
-			console.log(data);
 			this.setState({parties: data});
 		}).catch(err => {
-			console.log(err);
+			this.msg.error(`Error: Unable to retrieve active parties`);
 		});
 	}
 
@@ -80,7 +79,6 @@ class RestaurantMain extends Component {
 				/>
 			);
 		}).catch(err => {
-			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to deactivate party.');
 		});
@@ -93,35 +91,15 @@ class RestaurantMain extends Component {
 			// sets state of partyToSendSMS and showSMSModal so modal is triggered
 			this.setState({ partyToSendSMS: data }, () => this.showSMSModal());
 		}).catch(err => {
-			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to deliver SMS');
 		});
-
-		// // performs axios post request which returns a promise
-		// axios.post(`/party/${partyId}/alert_sms`).then( ({data}) => {
-		// 	// grabs parties array through destructuring assignment
-		// 	const { parties } = this.state;
-		// 	// saves updatedParty equal to the updated document
-		// 	const updatedParty = data;
-		// 	// saves updated as new array equal to parties array but
-		// 	// with the updated document replacing its original value
-		// 	const updatedParties = parties.map((originalParty, i) => 
-		// 		originalParty._id === partyId ? updatedParty : originalParty
-		// 	);
-		// 	// call setState to update parties array
-		// 	this.setState({parties: updatedParties});
-		// 	// alert user that their request was successful
-		// 	this.msg.success('SMS delivered!');
-		// }).catch(err => {
-		// 	console.log(err);
-		// 	// alert user that there was an error processing the request
-		// 	this.msg.error('Error: Unable to deliver SMS');
-		// });
 	}
 
 	handleSendSMS(sms_message){
+		// grabs party id from state
 		const partyId = this.state.partyToSendSMS._id;
+		// submits post request which will carry out SMS delivery
 		axios.post(`/party/${partyId}/send_sms`, {sms_message}).then(response => {
 			console.log(response);
 			// sets alerted_sms to true
@@ -141,7 +119,6 @@ class RestaurantMain extends Component {
 			this.msg.success("SMS Successfully Delivered");
 		}).catch(err => {
 			this.msg.error("SMS Failed To Deliver");
-			console.log(err);
 		});
 	}
 
@@ -168,7 +145,6 @@ class RestaurantMain extends Component {
 					_id={partyId}
 			/>);
 		}).catch(err => {
-			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to update party arrived status.');
 		});
@@ -190,7 +166,6 @@ class RestaurantMain extends Component {
 			this.setState({parties: updatedParties});
 			this.msg.success('Party reset to not-yet-arrived.');	
 		}).catch(err => {
-			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to undo arrived status.');
 		});
@@ -208,7 +183,6 @@ class RestaurantMain extends Component {
 			this.setState({parties: data});
 			this.msg.success('Party reactivated!');
 		}).catch(err => {
-			console.log(err);
 			// alert user that there was an error processing the request
 			this.msg.error('Error: Unable to undo deactivation.');
 		});
@@ -241,10 +215,9 @@ class RestaurantMain extends Component {
 			return axios.get(`/restaurant/${restaurant_id}/parties/all`);
 		}).then(({data}) => {
 			this.setState({ parties: data});
-			console.log(data);
 			this.msg.success(`${party.party_name} successfully added!`);
 		}).catch(err => {
-			console.log(err);
+			this.msg.error(`Server Error: Unable to add ${party.party_name}`);
 		});
 	}
 
