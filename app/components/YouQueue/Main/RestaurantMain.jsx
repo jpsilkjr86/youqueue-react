@@ -222,16 +222,15 @@ class RestaurantMain extends Component {
 		$('#sms-modal').modal('open');
 	}
 
-	handleAddParty(data){
-		console.log(data); 
+	handleAddParty(party){
 		const { restaurant_id } = this.state;
-		//builds new party data. 
+		// builds new party data. 
 		const newPartyData = {
-			party_name: data.party_name,
-			party_size: data.party_size,
-			phone_number: data.phone_number,
-			reserved_under: data.first_name,
-			email: data.email,
+			party_name: party.party_name,
+			party_size: party.party_size,
+			phone_number: party.phone_number,
+			reserved_under: party.first_name,
+			email: party.email,
 			occasion: [],
 			restaurant_id: restaurant_id
 		};
@@ -243,6 +242,7 @@ class RestaurantMain extends Component {
 		}).then(({data}) => {
 			this.setState({ parties: data});
 			console.log(data);
+			this.msg.success(`${party.party_name} successfully added!`);
 		}).catch(err => {
 			console.log(err);
 		});
