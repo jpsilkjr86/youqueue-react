@@ -4,7 +4,8 @@ const TMClient = require('textmagic-rest-client'),
 			bcrypt = require('bcryptjs');	
 
 // imports database models
-const Party = require('../models/Party.js'),
+const mongoose = require('mongoose'),
+	Party = require('../models/Party.js'),
 	RestaurantUser = require('../models/RestaurantUser.js');
 
 // instantiates object to be exported
@@ -71,6 +72,24 @@ const yqh = {
 		},
 		undoArrived(_id) {
 			return Party.findOneAndUpdate({_id}, {arrived_table: false}, {new: true}).exec();
+		},
+		ensurePartyExistsInRestaurant(restaurant_id, party_id) {
+			// returns resolve(false) if either id is invalid
+			const isValidId = mongoose.Types.ObjectId.isValid;
+			if (!isValidId(restaurant_id) || !isValidId(party_id)) {
+				return Promise.resolve(false);
+			}
+			return Party.findOne().where({_id: party_id}).exec().then(party => {
+				if (!party) {
+					return false;
+				}
+				// use .equals method to compare Object ID's
+				// https://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
+				if (!party.restaurant_id.equals(restaurant_id)) {
+					return false;
+				}
+				return true;
+			});
 		},
 		getUser(_id) {
 			// first checks restaurant user type (can add customer search later if user == null)

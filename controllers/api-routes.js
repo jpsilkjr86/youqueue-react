@@ -55,6 +55,33 @@ module.exports = app => {
 	// 	});
 	// });
 
+	// security checkpoint for handling any party data:
+	// ensures a user is logged in first before doing any database query
+	app.get('/party/:id/?*', (req, res, next) => {
+		if (!req.user) {
+			console.log('ACCESS DENIED - NO USER IS LOGGED IN')
+			return res.send('Access denied: No user is logged in.');
+		}
+		next();
+	});
+
+	// security checkpoint for handling any party data:
+	// ensures the party id exists among the restaurant user's parties before proceeding
+	app.get('/party/:id*', (req, res, next) => {
+		console.log("ENSURING PARTY ID EXISTS AMONG RESTAURANT USER'S PARTIES...")
+		dbHelper.ensurePartyExistsInRestaurant(req.user._id, req.params.id).then(result => {
+			if (!result) {
+				console.log('PARTY ID NOT FOUND FOR RESTAURANT ID ' + req.user._id);
+				return res.send("Access denied: Party ID not found among restaurant's registered parties.");
+			}
+			console.log('PARTY ID FOUND! PROCEEDING WITH REQUEST...');
+			next();
+		}).catch(err => {
+			console.log(err);
+			return res.send('Server error.');
+		});
+	});
+
 	// route for getting party data by id
 	app.get('/party/:id', (req, res) => {
 		dbHelper.getPartyData(req.params.id).then(partyData => {
