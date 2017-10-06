@@ -5,23 +5,23 @@ const dbHelper = yqh.createDatabaseHelper();
 
 // exports as function which takes in app as parameter
 module.exports = app => {
-	// // ensures user id and restaurant id matches for all restaurant api requests
-	// app.get('/restaurant/:any?/:any?/:any?/:any?', (req, res, next) => {
-	// 	if (!req.user) {
-	// 		console.log('ACCESS DENIED - NO USER IS LOGGED IN')
-	// 		return res.send('Access denied: No user is logged in.');
-	// 	}
-	// 	next();
-	// });
+	// ensures user is logged in before rendering anything under /restaraunt/ uri
+	app.get('/restaurant/*', (req, res, next) => {
+		if (!req.user) {
+			console.log('ACCESS DENIED - NO USER IS LOGGED IN')
+			return res.send('Access denied: No user is logged in.');
+		}
+		next();
+	});
 
-	// // ensures user id and restaurant id matches for all restaurant api requests
-	// app.get('/restaurant/:any?/:any?/:any?/:any?', (req, res, next) => {
-	// 	if (req.user._id !== req.params.id) {
-	// 		console.log('ACCESS DENIED - RESTAURANT ID DOES NOT MATCH USER ID')
-	// 		return res.send('Permission denied: User id does not match restaurant id.');
-	// 	}
-	// 	next();
-	// });
+	// ensures user id and restaurant id matches for all restaurant api requests
+	app.get('/restaurant/:id/*', (req, res, next) => {
+		if (req.user._id != req.params.id) {
+			console.log('ACCESS DENIED - RESTAURANT ID DOES NOT MATCH USER ID')
+			return res.send('Permission denied: User id does not match restaurant id.');
+		}
+		next();
+	});
 
 	// get route for retrieving all active parties for a restaurant by its id
 	app.get('/restaurant/:id/parties/all', (req, res) => {
@@ -35,15 +35,25 @@ module.exports = app => {
 		});
 	});
 
-	// route for seeding parties for testing & development
-	app.get('/test/seedparties', (req, res) => {
-		dbHelper.seedParties('test').then(data => {
-			res.json(data);
+	// route for adding the party
+	app.post('/restaurant/:id/parties/add', (req, res) => {
+		dbHelper.addParty(req.body).then(newDoc => {
+			res.json(newDoc);
 		}).catch(err => {
 			console.log(err);
 			res.json(err);
 		});
 	});
+
+	// // route for seeding parties for testing & development
+	// app.get('/test/seedparties', (req, res) => {
+	// 	dbHelper.seedParties('test').then(data => {
+	// 		res.json(data);
+	// 	}).catch(err => {
+	// 		console.log(err);
+	// 		res.json(err);
+	// 	});
+	// });
 
 	// route for getting party data by id
 	app.get('/party/:id', (req, res) => {
@@ -105,16 +115,6 @@ module.exports = app => {
 		});
 	});
 
-	// route for adding the party***********
-	app.post('/restaurant/:id/parties/add', (req, res) => {
-		dbHelper.addParty(req.body).then(newDoc => {
-			res.json(newDoc);
-		}).catch(err => {
-			console.log(err);
-			res.json(err);
-		});
-	});
-
 	// route for send SMS to party
 	app.post('/party/:id/send_sms', (req, res) => {
 		// creates youQueueSMS instance (only create as needed)
@@ -137,9 +137,3 @@ module.exports = app => {
 		});
 	});
 };
-
-
-		// console.log(req.user);
-		// if (!req.user) {
-		// 	return res.send('Request denied: no user logged in.');
-		// }
