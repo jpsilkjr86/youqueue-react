@@ -24,7 +24,7 @@ module.exports = {
         loader: "babel-loader",
         query: {
           // transformations
-          presets: ["react", "es2015"]
+          presets: ["react", "env"]
         }
       }
     ]
