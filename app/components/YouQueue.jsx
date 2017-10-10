@@ -8,6 +8,7 @@ import Header from './YouQueue/Header.jsx';
 import Login from './YouQueue/Login.jsx';
 import Footer from './YouQueue/Footer.jsx';
 import MainContainer from './YouQueue/MainContainer.jsx';
+import AuthRoute from './YouQueue/AuthRoute.jsx';
 
 // imports supplementary AlertContainer component from react-alert
 import AlertContainer from 'react-alert';
@@ -181,16 +182,11 @@ class YouQueue extends Component {
 			      	/>
 			      }/>
 			    	{/* This route ensures user is logged in before rendering anything in Main*/}
-			      <Route path="/" render={props => (
-					    this.state.loggedIn ? (
-					      <Main {...props}
-					      	loggedIn={this.state.loggedIn}
-					      	userType={this.state.userType}
-					      	userId={this.state.userId}
-					      />
-					    ) : (
-					      <Redirect exact to="/login"/>
-					    )
+			      <AuthRoute path="/" loggedIn={this.state.loggedIn} render={props => (
+				      <Main {...props}
+				      	userType={this.state.userType}
+				      	userId={this.state.userId}
+				      />
 					  )}/>
 					</Switch>
 				</MainContainer>
@@ -202,3 +198,16 @@ class YouQueue extends Component {
 
 // exports YouQueue component for other files to use
 export default YouQueue;
+
+/*
+						<Route path="/" render={props => (
+					    this.state.loggedIn ? (
+					      <Main {...props}
+					      	userType={this.state.userType}
+					      	userId={this.state.userId}
+					      />
+					    ) : (
+					      <Redirect exact to="/login"/>
+					    )
+					  )}/>
+					  */
