@@ -24,7 +24,8 @@ module.exports = {
         loader: "babel-loader",
         query: {
           // transformations
-          presets: ["react", "env"]
+          presets: ["react", "env"],
+          plugins: [require('babel-plugin-transform-object-rest-spread')]
         }
       }
     ]
