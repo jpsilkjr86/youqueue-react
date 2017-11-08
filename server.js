@@ -128,9 +128,9 @@ app.use(session({secret: 'targetgumption', saveUninitialized: true, resave: true
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ============ Webpack Middleware Configurations (Development Only) ============
-// first checks to make sure NODE_ENV is in development mode (ie not production mode)
-if (process.env.NODE_ENV !== 'production') {
+// ============ Webpack Middleware Configurations (Development Only - "npm run dev") ============
+// first checks to make sure NODE_ENV is in development mode
+if (process.env.NODE_ENV === 'development') {
   console.log('NODE_ENV is in development mode.'
   	+ '\nConfiguring webpack-dev-middleware and webpack-hot-middleware...');
 

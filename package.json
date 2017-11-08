@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-noserver": "webpack-dev-server --open --config webpack.dev.js",
-    "dev": "node server.js",
-    "build": "webpack --config webpack.prod.js",
-    "start": "npm run build && node server.js"
+    "dev-build": "webpack --config webpack.dev.js",
+    "dev": "set NODE_ENV=development&& node server.js",
+    "heroku-postbuild": "webpack --config webpack.prod.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
