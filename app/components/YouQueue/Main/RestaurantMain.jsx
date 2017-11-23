@@ -9,6 +9,7 @@ import AlertContainer from 'react-alert';
 import QueueDashboard from './RestaurantMain/QueueDashboard.jsx';
 import PartyForm from './RestaurantMain/PartyForm.jsx';
 import SMSModal from './RestaurantMain/SMSModal.jsx';
+import NoMatch from './NoMatch.jsx';
 
 // imports axios for ajax calls
 import axios from 'axios';
@@ -242,7 +243,10 @@ class RestaurantMain extends Component {
 					<Route exact path="/restaurant/:id/parties/add" render={props => (
 						<PartyForm handleAddParty={this.handleAddParty}/>
 					)}/>
-	      	<Redirect exact to={`/restaurant/${restaurant_id}/dashboard`}/>
+					{/* renders dashboard as default index route */}
+	      	<Redirect exact from="/" to={`/restaurant/${restaurant_id}/dashboard`}/>
+	      	{/* all other routes will be rendered as NoMatch */}
+	      	<Route component={NoMatch}/>
 				</Switch>
 			</div>
 		);
