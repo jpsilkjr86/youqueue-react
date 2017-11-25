@@ -31,7 +31,9 @@ class RestaurantMain extends Component {
 		    time: 5000,
 		    transition: 'scale'
 		  },
-		  partyToSendSMS: null
+		  partyToSendSMS: null,
+		  // for letting QueueDashboard know whether to render loading gif
+		  isRetrievingParties: true
 		};
 
 		this.handleDeactivate = this.handleDeactivate.bind(this);
@@ -46,15 +48,28 @@ class RestaurantMain extends Component {
 
 	// called once the component mounts for the first time
 	componentDidMount() {
+
+		setTimeout(() => {
+
 		// saves id as more manageable constable
 		const id = this.state.restaurant_id;
 		// performs axios request to get parties by restaurant id
 		axios.get(`/restaurant/${id}/parties/all`).then( ({data}) => {
-			// updates parties array with response data
-			this.setState({parties: data});
+			// updates parties array with response data, sets isRetrievingParties to false
+			// to tell QueueDashboard to stop rendering loading gif
+			this.setState({
+				parties: data,
+		  	isRetrievingParties: false
+			});
 		}).catch(err => {
 			this.msg.error(`Error: Unable to retrieve active parties`);
+			// sets isRetrievingParties to false to tell QueueDashboard to stop rendering loading gif
+			this.setState({
+		  	isRetrievingParties: false
+			});
 		});
+
+		}, 1000);
 	}
 
 	// handles deactivate party functionality
@@ -223,7 +238,7 @@ class RestaurantMain extends Component {
 	}
 
   render() {
-  	const { parties, restaurant_id } = this.state;
+  	const { parties, restaurant_id, isRetrievingParties } = this.state;
 		return (
 			<div>
 				{/* AlertContainer component at top for rendering react-alert */}
@@ -234,6 +249,7 @@ class RestaurantMain extends Component {
 				<Switch>
 					<Route exact path="/restaurant/:id/dashboard" render={props => 
 						<QueueDashboard
+							isRetrievingParties={isRetrievingParties}
 							parties={parties}
 							handleDeactivate={this.handleDeactivate}
 							handleAlertSMS={this.handleAlertSMS}

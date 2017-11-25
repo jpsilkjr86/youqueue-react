@@ -9,6 +9,8 @@ import Login from './YouQueue/Login.jsx';
 import Footer from './YouQueue/Footer.jsx';
 import MainContainer from './YouQueue/MainContainer.jsx';
 import AuthRoute from './YouQueue/AuthRoute.jsx';
+import LoadingContainer from './YouQueue/LoadingContainer.jsx';
+import Loading from './YouQueue/Loading.jsx';
 
 // imports supplementary AlertContainer component from react-alert
 import AlertContainer from 'react-alert';
@@ -37,6 +39,8 @@ class YouQueue extends Component {
 		    time: 5000,
 		    transition: 'scale'
 		  },
+		  // boolean for triggering loading animation
+		  isCheckingLoginStatus: true
 		};
 
 		this.handleLogOut = this.handleLogOut.bind(this);
@@ -51,15 +55,28 @@ class YouQueue extends Component {
 		axios.get('/login/checkauth').then(({data}) => {
 			if (data.isLoggedIn) {
 				this.setState({
+					// sets user data as state
 					loggedIn: true,
 					userType: data.user.usertype,
 					userId: data.user._id,
-					user: data.user
+					user: data.user,
+					// sets isCheckingLoginStatus to false to stop loading animation
+					isCheckingLoginStatus: false
 				});
 				this.msg.success(data.flash.message);
 			}
+			else {
+				this.setState({
+					// sets isCheckingLoginStatus to false to stop loading animation
+					isCheckingLoginStatus: false
+				});
+			}
 		}).catch(err => {
 			this.msg.error('Error checking authorization.');
+			// sets isCheckingLoginStatus to false to stop loading animation
+			this.setState({
+				isCheckingLoginStatus: false
+			});
 		});
 	}
 
@@ -171,24 +188,29 @@ class YouQueue extends Component {
 	      	userId={this.state.userId}
 	      />
 	      <MainContainer>
-		      <Switch>
-			      <Route exact path="/login" render={props =>
-			      	<Login
-			      		handleLogIn={this.handleLogIn}
-			      		handleSignUp={this.handleSignUp}
-			      		loggedIn={this.state.loggedIn}
-			      		loginGuest={this.loginGuest}
-			      		signupGuest={this.signupGuest}
-			      	/>
-			      }/>
-			    	{/* This route ensures user is logged in before rendering anything in Main*/}
-			      <AuthRoute path="/" loggedIn={this.state.loggedIn} render={props => (
-				      <Main {...props}
-				      	userType={this.state.userType}
-				      	userId={this.state.userId}
-				      />
-					  )}/>
-					</Switch>
+	      	<LoadingContainer
+	      		isLoading={this.state.isCheckingLoginStatus}
+	      		loadingComponent={Loading}
+	      	>
+			      <Switch>
+				      <Route exact path="/login" render={props =>
+				      	<Login
+				      		handleLogIn={this.handleLogIn}
+				      		handleSignUp={this.handleSignUp}
+				      		loggedIn={this.state.loggedIn}
+				      		loginGuest={this.loginGuest}
+				      		signupGuest={this.signupGuest}
+				      	/>
+				      }/>
+				    	{/* This route ensures user is logged in before rendering anything in Main*/}
+				      <AuthRoute path="/" loggedIn={this.state.loggedIn} render={props => (
+					      <Main {...props}
+					      	userType={this.state.userType}
+					      	userId={this.state.userId}
+					      />
+						  )}/>
+						</Switch>
+					</LoadingContainer>
 				</MainContainer>
 			  <Footer/>
 	    </div>
