@@ -48,28 +48,29 @@ class RestaurantMain extends Component {
 
 	// called once the component mounts for the first time
 	componentDidMount() {
-
+		// mininum time for loading gif to be recognized before performing ajax request
+		// (can be removed or changed as needed)
 		setTimeout(() => {
 
-		// saves id as more manageable constable
-		const id = this.state.restaurant_id;
-		// performs axios request to get parties by restaurant id
-		axios.get(`/restaurant/${id}/parties/all`).then( ({data}) => {
-			// updates parties array with response data, sets isRetrievingParties to false
-			// to tell QueueDashboard to stop rendering loading gif
-			this.setState({
-				parties: data,
-		  	isRetrievingParties: false
+			// saves id as more manageable constable
+			const id = this.state.restaurant_id;
+			// performs axios request to get parties by restaurant id
+			axios.get(`/restaurant/${id}/parties/all`).then( ({data}) => {
+				// updates parties array with response data, sets isRetrievingParties to false
+				// to tell QueueDashboard to stop rendering loading gif
+				this.setState({
+					parties: data,
+			  	isRetrievingParties: false
+				});
+			}).catch(err => {
+				this.msg.error(`Error: Unable to retrieve active parties`);
+				// sets isRetrievingParties to false to tell QueueDashboard to stop rendering loading gif
+				this.setState({
+			  	isRetrievingParties: false
+				});
 			});
-		}).catch(err => {
-			this.msg.error(`Error: Unable to retrieve active parties`);
-			// sets isRetrievingParties to false to tell QueueDashboard to stop rendering loading gif
-			this.setState({
-		  	isRetrievingParties: false
-			});
-		});
 
-		}, 1000);
+		}, 1500);
 	}
 
 	// handles deactivate party functionality

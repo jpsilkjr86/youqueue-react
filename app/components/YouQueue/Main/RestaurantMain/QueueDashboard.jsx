@@ -11,7 +11,10 @@ import Loading from '../../Loading.jsx';
 // declares QueueDashboard pure functional component, which will be this file's export
 const QueueDashboard = props => (
 	<DashboardContainer title="You-Queue Dashboard">
-    <LoadingContainer isLoading={props.isRetrievingParties} loadingComponent={Loading}>
+    <LoadingContainer
+      isLoading={props.isRetrievingParties}
+      renderLoading={() => <Loading text="Retrieving Party Data..."/>}
+    >
     	{ // after finished loading, render under the following conditions:
         // 1) render PartyCollection component for each party in the parties array
         props.parties.length > 0 ? (

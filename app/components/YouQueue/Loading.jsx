@@ -5,6 +5,7 @@ import React from 'react';
 const Loading = props => (
   <div className="loading-wrapper">
     <img src="/assets/images/loadingcube.gif" alt="Loading..."/>
+    {props.text}
   </div>
 );
 

@@ -51,33 +51,39 @@ class YouQueue extends Component {
 	}
 
 	componentDidMount() {
-		// checks authentication status through axios get request
-		axios.get('/login/checkauth').then(({data}) => {
-			if (data.isLoggedIn) {
+		// mininum time for loading gif to be recognized before performing ajax request
+		// (can be removed of changed as needed)
+		setTimeout(() => {
+
+			// checks authentication status through axios get request
+			axios.get('/login/checkauth').then(({data}) => {
+				if (data.isLoggedIn) {
+					this.setState({
+						// sets user data as state
+						loggedIn: true,
+						userType: data.user.usertype,
+						userId: data.user._id,
+						user: data.user,
+						// sets isCheckingLoginStatus to false to stop loading animation
+						isCheckingLoginStatus: false
+					});
+					this.msg.success(data.flash.message);
+				}
+				else {
+					this.setState({
+						// sets isCheckingLoginStatus to false to stop loading animation
+						isCheckingLoginStatus: false
+					});
+				}
+			}).catch(err => {
+				this.msg.error('Error checking authorization.');
+				// sets isCheckingLoginStatus to false to stop loading animation
 				this.setState({
-					// sets user data as state
-					loggedIn: true,
-					userType: data.user.usertype,
-					userId: data.user._id,
-					user: data.user,
-					// sets isCheckingLoginStatus to false to stop loading animation
 					isCheckingLoginStatus: false
 				});
-				this.msg.success(data.flash.message);
-			}
-			else {
-				this.setState({
-					// sets isCheckingLoginStatus to false to stop loading animation
-					isCheckingLoginStatus: false
-				});
-			}
-		}).catch(err => {
-			this.msg.error('Error checking authorization.');
-			// sets isCheckingLoginStatus to false to stop loading animation
-			this.setState({
-				isCheckingLoginStatus: false
 			});
-		});
+
+		}, 1000);
 	}
 
 	handleLogOut() {
@@ -190,7 +196,7 @@ class YouQueue extends Component {
 	      <MainContainer>
 	      	<LoadingContainer
 	      		isLoading={this.state.isCheckingLoginStatus}
-	      		loadingComponent={Loading}
+	      		renderLoading={() => <Loading text="Please wait..."/>}
 	      	>
 			      <Switch>
 				      <Route exact path="/login" render={props =>
