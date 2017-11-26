@@ -11,10 +11,6 @@ const LoadingContainer = props => {
     children
   } = props;
 
-  console.log("LoadingContainer isLoading:", isLoading);
-  console.log(LoadingComponent);
-  console.log(renderLoading);
-
   if (isLoading) {
     // LoadingComponent takes precedence in case renderLoading
     // and LoadingCompoent are both received as props.

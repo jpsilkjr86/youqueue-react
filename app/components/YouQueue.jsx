@@ -53,7 +53,8 @@ class YouQueue extends Component {
 	componentDidMount() {
 		// mininum time for loading gif to be recognized before performing ajax request
 		// (can be removed of changed as needed)
-		setTimeout(() => {
+		// saved as this.timeout so we can clear it later.
+		this.timeout = setTimeout(() => {
 
 			// checks authentication status through axios get request
 			axios.get('/login/checkauth').then(({data}) => {
@@ -83,7 +84,15 @@ class YouQueue extends Component {
 				});
 			});
 
-		}, 1000);
+		}, 700);
+	}
+
+	// clear the timeout if it exists before unmounting to avoid setting state
+	// of unmounted components
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 	}
 
 	handleLogOut() {
@@ -226,16 +235,3 @@ class YouQueue extends Component {
 
 // exports YouQueue component for other files to use
 export default YouQueue;
-
-/*
-						<Route path="/" render={props => (
-					    this.state.loggedIn ? (
-					      <Main {...props}
-					      	userType={this.state.userType}
-					      	userId={this.state.userId}
-					      />
-					    ) : (
-					      <Redirect exact to="/login"/>
-					    )
-					  )}/>
-					  */

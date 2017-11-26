@@ -49,8 +49,9 @@ class RestaurantMain extends Component {
 	// called once the component mounts for the first time
 	componentDidMount() {
 		// mininum time for loading gif to be recognized before performing ajax request
-		// (can be removed or changed as needed)
-		setTimeout(() => {
+		// (can be removed or changed as needed).
+		// saved as this.timeout so we can clear it later.
+		this.timeout = setTimeout(() => {
 
 			// saves id as more manageable constable
 			const id = this.state.restaurant_id;
@@ -70,7 +71,15 @@ class RestaurantMain extends Component {
 				});
 			});
 
-		}, 1500);
+		}, 900);
+	}
+
+	// clear the timeout if it exists before unmounting to avoid setting state
+	// of unmounted components
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 	}
 
 	// handles deactivate party functionality
