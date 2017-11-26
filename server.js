@@ -4,6 +4,7 @@ const express = require('express'),
   logger = require('morgan'),
   mongoose = require('mongoose'),
   fs = require('fs'),
+  path = require('path'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
   passport = require('passport'),
@@ -172,9 +173,9 @@ db.once('open', function() {
 		// sets up routes
     require('./controllers/auth-routes.js')(app, passport);
 		require('./controllers/api-routes.js')(app);
-    // default html route is to redirect the index page
+    // catch-all get route to ensure SPA works correctly (with react-router)
     app.get('*', (req, res) => {
-      res.redirect('/');
+      res.sendFile(path.join(__dirname + '/public/index.html'));
     });
 	});
 });

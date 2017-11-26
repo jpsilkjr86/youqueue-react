@@ -6,7 +6,7 @@
   <!-- Viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <!-- Favicon -->
-  <link rel="shortcut icon" href="favicon.png" sizes="16x16" type="image/png"/>
+  <link rel="shortcut icon" href="/favicon.png" sizes="16x16" type="image/png"/>
   <!-- Google Fonts Links -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Kaushan+Script|Shadows+Into+Light" rel="stylesheet"/>
@@ -17,13 +17,15 @@
   <script src="https://use.fontawesome.com/556453154e.js"></script>
 </head>
 <body>
+  <!-- MAKE SURE TO PUT "/" AT HEAD OF ALL RELATIVE PATHS FOR SPA TO WORK PROPERLY. OTHERWISE -->
+  <!-- LINKS WON'T BE ABLE ACCESS THE FILES WHEN CLIENT ATTEMPTS TO LOAD PAGE FROM NESTED ROUTE. -->
   <!-- React app -->
   <div id="app"></div>
   <!-- jQuery and Matierialize script links -->
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
   <!-- Link to bundle.js for React -->
-  <script type="text/javascript" src="bundle.js"></script>
+  <script type="text/javascript" src="/bundle.js"></script>
   <script type="text/javascript" src="/assets/js/script.js"></script>
 </body>
 </html>
