@@ -13,6 +13,7 @@ class SMSForm extends Component {
 		const sms_message = 'You-Queue Alert for ' + props.party.party_name + ': ' 
 		          	+ 'Your table is ready! Please come at your earliest convenience. '
 		          	+ 'Enjoy your meal! (AUTO-SMS:Do not reply!)';
+
 		const charactersRemaining = 140 - sms_message.length;
 
 		// set initial state 
@@ -26,12 +27,24 @@ class SMSForm extends Component {
 
 	}
 
+	// needed so as to ensure button's disabled state is set properly upon mounting.
+	componentDidMount() {
+		// disables submit button if SMS 140 character limit is exceeded
+    this.button.disabled = (this.state.charactersRemaining < 0);
+	}
+
+	// since the same modal is being used, this lifecycle method is needed 
+	// so that the content can change dynamically such as when another customer
+	// phone button is clicked. new props will thus change the content.
 	componentWillReceiveProps(nextProps) {
 		// updates like how the constructor sets state from received props
 		const sms_message = 'You-Queue Alert for ' + nextProps.party.party_name + ': ' 
 		          	+ 'Your table is ready! Please come at your earliest convenience. '
 		          	+ 'Enjoy your meal! (AUTO-SMS:Do not reply!)';
 		const charactersRemaining = 140 - sms_message.length;
+
+		// disables submit button if SMS 140 character limit is exceeded
+    this.button.disabled = (charactersRemaining < 0);
 
 		// updates state
 	  this.setState({ 
@@ -44,8 +57,8 @@ class SMSForm extends Component {
 		
     const newSMSMsg = event.target.value;
 
+    // disables submit button if SMS 140 character limit is exceeded
     const newCharRemainging = 140 - newSMSMsg.length;
-
     this.button.disabled = (newCharRemainging < 0);
 
     // sets state of whatever the input name is to the value of event object
